@@ -1,12 +1,45 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-primevue"],
-  primevue: {
-    cssLayerOrder: "tailwind-base, primevue, tailwind-utilities",
-    components: {
-      exclude: ["Editor", "Chart"]
-    }
-  },
-  css: ["primevue/resources/themes/lara-dark-indigo/theme.css"]
+    app: {
+        head: {
+            title: 'Sakai Vue',
+            link: [
+                {
+                    id: 'theme-css',
+                    rel: 'stylesheet',
+                    type: 'text/css',
+                    href: '/themes/aura-light-green/theme.css'
+                }
+            ]
+        }
+    },
+    modules: ['nuxt-primevue', '@pinia/nuxt'],
+    runtimeConfig: {
+        public: {
+            apiUrl: process.env.API_URL || 'http://localhost:9000'
+        }
+    },
+    primevue: {
+        options: { ripple: true },
+        components: {
+            exclude: ['Editor']
+        }
+    },
+    script: [
+        {
+            strategy: 'lazyOnload',
+            src: 'https://www.googletagmanager.com/gtag/js?id=UA-93461466-1'
+        },
+        {
+            id: 'ga-analytics',
+            strategy: 'lazyOnload',
+            children: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'UA-93461466-1');
+            `
+        }
+    ],
+    css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/primevue.min.css', '@/assets/styles.scss']
 });

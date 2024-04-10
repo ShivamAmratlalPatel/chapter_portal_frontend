@@ -1,7 +1,7 @@
+<script setup lang="ts">
+import AppLayout from '@/layouts/AppLayout.vue';
+</script>
+
 <template>
-  <div class="flex flex-col min-h-screen">
-    <div class="flex-1 container mx-auto z-0 px-4 py-6 lg:px-0">
-      <slot />
-    </div>
-  </div>
+    <app-layout></app-layout>
 </template>
