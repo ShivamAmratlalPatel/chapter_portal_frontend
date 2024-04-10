@@ -1,1 +1,8 @@
+.git
+.gitignore
+.output
+.dist
+dist
 node_modules
+npm-debug.log
+
