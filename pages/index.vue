@@ -333,7 +333,7 @@ watch(
                             <i class="pi pi-question text-xl text-pink-500"></i>
                         </div>
                         <span class="text-900 line-height-3"
-                            >Hiral Makecha
+                            >Hiral Makhecha
                             <span class="text-700">has posted a new questions about your event.</span>
                         </span>
                     </li>
