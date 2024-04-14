@@ -33,6 +33,12 @@ export interface ChapterSidebar {
     items: ChapterList;
 }
 
+export interface Zone {
+    id: string;
+    name: string;
+    is_deleted: boolean;
+}
+
 export const useChaptersStore = defineStore({
     id: 'chapters',
     state: () => ({
@@ -42,7 +48,8 @@ export const useChaptersStore = defineStore({
             results: []
         } as PaginatedChapters,
         chapter: null as unknown as ChapterRead,
-        chapter_sidebar_list: null as unknown as ChapterSidebar[]
+        chapter_sidebar_list: null as unknown as ChapterSidebar[],
+        zones: [] as unknown as Zone[]
     }),
     actions: {
         async fetchChapters(next_page: NextPage | null = null, filter_search: string | null = null) {
@@ -79,6 +86,15 @@ export const useChaptersStore = defineStore({
             });
 
             return this.chapter;
+        },
+        async fetchZones() {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.zones = await $fetch('zones', {
+                baseURL: runtimeConfig.public.apiUrl
+            });
+
+            return this.zones;
         }
     }
 });

@@ -17,9 +17,7 @@ async function fetchData() {
     try {
         // Make the API call
         const route = useRoute();
-        console.log(route);
         const chapter_id = route.params.chapterid;
-        console.log(chapter_id);
         await fetchChapterDetails(chapter_id);
     } catch (error) {
         // Handle any errors here

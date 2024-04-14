@@ -20,10 +20,10 @@ async function fetchData() {
     }
     try {
         // Make the API call
-        await questions_store.fetchQuestion(props.section_id);
+        await questions_store.fetchQuestionChapter(props.section_id);
     } catch (error) {
         // Handle any errors here
-        console.error('fetchQuestions');
+        console.error('fetchQuestionChapters');
         console.error(error);
     }
 }

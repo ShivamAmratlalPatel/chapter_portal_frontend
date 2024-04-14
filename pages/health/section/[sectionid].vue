@@ -1,12 +1,12 @@
 <script setup lang="ts">
-const router = useRoute();
-
-const section_id = ref(router.params.sectionid);
+definePageMeta({
+    layout: 'health'
+});
 </script>
 
 <template>
     <div>
-        <h1>Section {{ section_id }}</h1>
+        <SectionTable></SectionTable>
     </div>
 </template>
 

@@ -16,7 +16,7 @@ export const useHealthStore = defineStore({
 
             return this.health;
         },
-        async saveHealth(chapter_id: string, data) {
+        async saveHealth(chapter_id: string, data: any) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
             this.health = await $fetch(`health/${chapter_id}`, {
@@ -33,6 +33,15 @@ export const useHealthStore = defineStore({
             this.health = await $fetch(`health/${chapter_id}/section/${section_id}`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
+        },
+        async fetchHealthByZone(zone: string, year: number, month: number, section_id: number) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await $fetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
+
+            return this.health;
         }
     }
 });
