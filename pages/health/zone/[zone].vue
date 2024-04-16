@@ -9,7 +9,7 @@ definePageMeta({
 
 const zone = ref();
 
-const selectButtonValue1 = ref(null);
+const selectButtonValue1 = ref({ year: '2024', month: '04', label: '2024-04' });
 const buttons_list = ref([
     { year: '2024', month: '04', label: '2024-04' },
     { year: '2024', month: '05', label: '2024-05' },
