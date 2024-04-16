@@ -55,12 +55,12 @@ onBeforeMount(() => {
 
 <template>
     <h1>{{ useRoute().params.zone }}</h1>
-    <FloatLabel class="w-full md:w-14rem">
+    <FloatLabel class="w-full md:w-14rem mb-2">
         <Dropdown v-model="selectButtonValue1" :options="buttons_list" optionLabel="label" inputId="dd-city" class="w-full" />
         <label for="dd-city">Select a Year-Month</label>
     </FloatLabel>
     <div class="grid p-fluid" v-if="chapters_store.chapter_list">
-        <div class="col-12 xl:col-6" v-for="chapter in chapters_store.chapter_list" :key="chapter.id">
+        <div class="col-8 xl:col-4" v-for="chapter in chapters_store.chapter_list" :key="chapter.id">
             <div class="card flex flex-column align-items-center">
                 <h5 class="text-left w-full">{{ chapter.name }}</h5>
                 <ChapterRadarChart :chapter_id="chapter.id" :year="selectButtonValue1.year" :month="selectButtonValue1.month" />
