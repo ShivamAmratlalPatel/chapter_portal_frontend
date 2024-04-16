@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reloadNuxtApp } from '#app';
+import { useChaptersStore } from '~/stores/chapters';
 
 definePageMeta({
     layout: 'health'
 });
 import { onBeforeMount } from 'vue';
-import { useChaptersStore } from '~/stores/chapters';
 
 const chapters_store = useChaptersStore();
 

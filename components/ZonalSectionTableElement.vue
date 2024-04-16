@@ -15,6 +15,26 @@ let props = defineProps({
 const health_data = ref();
 
 const columns = ref([]);
+
+const fetchDataSection = async (section_id: string) => {
+    try {
+        // Make the API call
+        columns.value = await questions_store.fetchQuestionSection(section_id);
+    } catch (error) {
+        // Handle any errors here
+        console.error('fetchQuestionChapters');
+        console.error(error);
+    }
+    try {
+        // Make the API call
+        health_data.value = await health_store.fetchHealthByZone(props.zone, props.year, props.month, section_id);
+    } catch (error) {
+        // Handle any errors here
+        console.error('fetchHealth');
+        console.error(error);
+    }
+};
+
 const fetchData = async () => {
     try {
         // Make the API call
@@ -41,6 +61,12 @@ async function saveHealthScore(data) {
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
+});
+
+onBeforeRouteUpdate((newRoute) => {
+    // Call fetchData when the route is about to be updated
+    props.sectionid = newRoute.params.sectionid;
+    fetchDataSection(newRoute.params.sectionid);
 });
 </script>
 

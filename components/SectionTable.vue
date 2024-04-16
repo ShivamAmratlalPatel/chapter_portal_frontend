@@ -24,14 +24,25 @@ const buttons_list = ref([
 
 const selectButtonValue2 = ref([]);
 
+async function fetchSectionData(section_id: string) {
+    try {
+        // Make the API call
+        await sections_store.fetchSection(section_id);
+    } catch (error) {
+        // Handle any errors here
+        console.error('fetchSection');
+        console.error(error);
+    }
+}
+
 async function fetchData() {
     try {
         // Make the API call
         const route = useRoute();
-        await sections_store.fetchSection(route.params.sectionid);
+        await fetchSectionData(route.params.sectionid);
     } catch (error) {
         // Handle any errors here
-        console.error('fetchSection');
+        console.error('fetchSectionData');
         console.error(error);
     }
     try {
@@ -47,6 +58,11 @@ async function fetchData() {
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
+});
+
+onBeforeRouteUpdate((newRoute) => {
+    // Call fetchData when the route is about to be updated
+    fetchSectionData(newRoute.params.sectionid);
 });
 </script>
 

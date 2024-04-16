@@ -5,6 +5,8 @@ import { onBeforeRouteUpdate } from 'vue-router';
 
 const sections_store = useSectionsStore();
 
+const selectButtonValue1 = ref(null);
+
 async function fetchData() {
     try {
         // Make the API call
@@ -24,8 +26,6 @@ onBeforeMount(() => {
 onBeforeRouteUpdate((newRoute) => {
     fetchData();
 });
-
-const selectButtonValue1 = ref(null);
 </script>
 
 <template>

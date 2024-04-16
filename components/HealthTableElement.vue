@@ -8,14 +8,13 @@ const props = defineProps(['section_id']);
 const health_store = useHealthStore();
 const questions_store = useQuestionssStore();
 
-async function fetchData() {
+async function fetchHealth(chapter_id: string) {
     try {
         // Make the API call
-        const route = useRoute();
-        await health_store.fetchHealthBySection(route.params.chapterid, props.section_id);
+        await health_store.fetchHealthBySection(chapter_id, props.section_id);
     } catch (error) {
         // Handle any errors here
-        console.error('fetchHealth');
+        console.error('fetchHealthbySection');
         console.error(error);
     }
     try {
@@ -28,13 +27,25 @@ async function fetchData() {
     }
 }
 
+async function fetchData() {
+    try {
+        // Make the API call
+        const route = useRoute();
+        await fetchHealth(route.params.chapterid);
+    } catch (error) {
+        // Handle any errors here
+        console.error('fetchHealth');
+        console.error(error);
+    }
+}
+
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
 });
 
 onBeforeRouteUpdate((newRoute) => {
-    fetchData();
+    fetchHealth(newRoute.params.chapterid);
 });
 
 const editingRows = ref();

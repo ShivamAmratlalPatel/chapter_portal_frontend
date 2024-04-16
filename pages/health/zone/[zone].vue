@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { reloadNuxtApp } from '#app';
-
 definePageMeta({
     layout: 'health'
 });
 
+const zone = ref();
+
+async function fetchData() {
+    const route = useRoute();
+    zone.value = route.params.zone;
+}
+
 onMounted(() => {
     // Call fetchData when the component is about to be mounted
     reloadNuxtApp();
+    fetchData();
 });
 </script>
 
 <template>
-    <div>
-        <SectionTable></SectionTable>
-    </div>
+    <h1>{{ useRoute().params.zone }}</h1>
 </template>
-
-<style scoped lang="scss"></style>
