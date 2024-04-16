@@ -49,7 +49,8 @@ export const useChaptersStore = defineStore({
         } as PaginatedChapters,
         chapter: null as unknown as ChapterRead,
         chapter_sidebar_list: null as unknown as ChapterSidebar[],
-        zones: [] as unknown as Zone[]
+        zones: [] as unknown as Zone[],
+        chapter_list: [] as unknown as ChapterList[]
     }),
     actions: {
         async fetchChapters(next_page: NextPage | null = null, filter_search: string | null = null) {
@@ -95,6 +96,15 @@ export const useChaptersStore = defineStore({
             });
 
             return this.zones;
+        },
+        async fetchChapterByZone(zone: string) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.chapter_list = await $fetch(`chapters/${zone}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
+
+            return this.chapter_list;
         }
     }
 });

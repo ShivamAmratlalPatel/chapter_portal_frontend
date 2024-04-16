@@ -42,6 +42,15 @@ export const useHealthStore = defineStore({
             });
 
             return this.health;
+        },
+        async fetchAverageChapterHealth(chapter_id: string, year: number, month: number) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
+
+            return this.health;
         }
     }
 });
