@@ -29,7 +29,7 @@ onBeforeRouteUpdate((newRoute) => {
 </script>
 
 <template>
-    <SelectButton v-model="selectButtonValue1" :options="sections_store.sections" optionLabel="name" />
+    <SelectButton v-model="selectButtonValue1" :options="sections_store.sections" optionLabel="name" class="mb-2" />
     <div v-for="section in sections_store.sections" :key="section.id">
         <HealthTableElement v-if="selectButtonValue1 && selectButtonValue1.id === section.id" :section_id="section.id"></HealthTableElement>
     </div>

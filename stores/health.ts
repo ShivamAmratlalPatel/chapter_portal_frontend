@@ -19,7 +19,7 @@ export const useHealthStore = defineStore({
         async saveHealth(chapter_id: string, data: any) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.health = await $fetch(`health/${chapter_id}`, {
+            await $fetch.raw(`health/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 method: 'PUT',
                 body: data
@@ -47,6 +47,15 @@ export const useHealthStore = defineStore({
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
             this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
+
+            return this.health;
+        },
+        async fetchChapterComments(chapter_id: string, year: number, month: number) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 

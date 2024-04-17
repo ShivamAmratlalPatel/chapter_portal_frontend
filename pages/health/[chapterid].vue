@@ -5,7 +5,6 @@ import { useChaptersStore } from '~/stores/chapters';
 definePageMeta({
     layout: 'health'
 });
-import { onBeforeMount } from 'vue';
 
 const chapters_store = useChaptersStore();
 

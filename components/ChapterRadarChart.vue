@@ -30,6 +30,10 @@ const radarData = ref(null);
 
 const radarOptions = ref(null);
 
+const chapter_name = ref('');
+
+const chapter_comments = ref([]);
+
 async function setColorOptions() {
     documentStyle.value = getComputedStyle(document.documentElement);
     textColor.value = documentStyle.value.getPropertyValue('--text-color');
@@ -39,11 +43,12 @@ async function setColorOptions() {
 
 async function setChart(chapter_id: string, year: string, month: string) {
     await setColorOptions();
+    chapter_name.value = (await chapters_store.fetchChapter(chapter_id)).name;
     radarData.value = {
         labels: sections_store.sections.map((section) => section.name),
         datasets: [
             {
-                label: (await chapters_store.fetchChapter(chapter_id)).name,
+                label: chapter_name.value,
                 borderColor: documentStyle.value.getPropertyValue('--indigo-400'),
                 pointBackgroundColor: documentStyle.value.getPropertyValue('--indigo-400'),
                 pointBorderColor: documentStyle.value.getPropertyValue('--indigo-400'),
@@ -72,6 +77,7 @@ async function setChart(chapter_id: string, year: string, month: string) {
             }
         }
     };
+    chapter_comments.value = await health_store.fetchChapterComments(chapter_id, year, month);
 }
 
 onBeforeMount(() => {
@@ -99,8 +105,28 @@ watch(
         setChart(props.chapter_id, props.year, newMonth);
     }
 );
+
+const display = ref(false);
+
+const open = () => {
+    display.value = true;
+};
+
+const close = () => {
+    display.value = false;
+};
 </script>
 
 <template>
-    <Chart type="radar" :data="radarData" :options="radarOptions"></Chart>
+    <Dialog :header="chapter_name" v-model:visible="display" :breakpoints="{ '960px': '75vw' }" :style="{ width: '30vw' }" :modal="true">
+        <p class="line-height-3 m-0">
+            <div v-for="(comment, index) in chapter_comments" :key="index">
+                {{ comment.section }} - {{ comment.comment }}
+            </div>
+        </p>
+        <template #footer>
+            <Button label="Ok" @click="close" icon="pi pi-check" class="p-button-outlined" />
+        </template>
+    </Dialog>
+    <Chart type="radar" :data="radarData" :options="radarOptions" @click="open"></Chart>
 </template>

@@ -50,14 +50,28 @@ onBeforeRouteUpdate((newRoute) => {
 
 const editingRows = ref();
 
+const toast = useToast();
+
 async function saveHealthScore(data) {
     const route = useRoute();
-    await health_store.saveHealth(route.params.chapterid, data.newData);
+    try {
+        await health_store.saveHealth(route.params.chapterid, data.newData);
+        toast.add({ severity: 'success', summary: 'Health Saved', detail: 'Health saved successfully', life: 3000 });
+    } catch (error) {
+        console.error('saveHealth');
+        console.error(error);
+        try {
+            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: `${error.data.detail}`, life: 3000 });
+        } catch (error) {
+            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: 'Error saving health', life: 3000 });
+        }
+    }
     await fetchData();
 }
 </script>
 
 <template>
+    <Toast></Toast>
     <DataTable v-model:editing-rows="editingRows" :value="health_store.health" striped-rows show-gridlines edit-mode="row" @row-edit-save="(event) => saveHealthScore(event)">
         <Column v-for="col of questions_store.questions" :key="col.field" :field="col.field" :header="col.header">
             <template #editor="{ data, field }">
