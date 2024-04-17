@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useHealthStore } from '~/stores/health';
 import { useQuestionssStore } from '~/stores/questions';
+import { ref } from 'vue';
 
 const health_store = useHealthStore();
 const questions_store = useQuestionssStore();
@@ -13,7 +14,7 @@ let props = defineProps({
 });
 
 const health_data = ref();
-
+const editingRows = ref();
 const columns = ref([]);
 
 const fetchDataSection = async (section_id: string) => {
@@ -54,10 +55,6 @@ const fetchData = async () => {
     }
 };
 
-async function saveHealthScore(data) {
-    console.log(data);
-}
-
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
@@ -68,6 +65,32 @@ onBeforeRouteUpdate((newRoute) => {
     props.sectionid = newRoute.params.sectionid;
     fetchDataSection(newRoute.params.sectionid);
 });
+
+const toast = useToast();
+
+async function saveHealthScore(data) {
+    console.log(data);
+    const chapter_id = data.newData.chapter_id;
+    delete data.newData.chapter_id;
+    delete data.newData.chapter;
+    delete data.newData.average;
+    data.newData.year = props.year;
+    data.newData.month = props.month;
+
+    try {
+        await health_store.saveHealth(chapter_id, data.newData);
+        toast.add({ severity: 'success', summary: 'Health Saved', detail: 'Health saved successfully', life: 3000 });
+    } catch (error) {
+        console.error('saveHealth');
+        console.error(error);
+        try {
+            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: `${error.data.detail}`, life: 3000 });
+        } catch (error) {
+            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: 'Error saving health', life: 3000 });
+        }
+    }
+    await fetchData();
+}
 </script>
 
 <template>
