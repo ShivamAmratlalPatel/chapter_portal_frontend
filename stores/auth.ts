@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import type { RuntimeConfig } from 'nuxt/schema';
 import { useAuthStorage } from '~/composables/auth';
-import jwt_decode from 'jwt-decode';
 
 export interface AuthUser {
     exp: number;
@@ -20,6 +19,21 @@ export interface AuthState {
 interface TokenResponse {
     access_token: string;
     token_type: any;
+}
+
+function jwt_decode(access_token: string) {
+    const base64Url = access_token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split('')
+            .map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join('')
+    );
+
+    return JSON.parse(jsonPayload);
 }
 
 export const useAuthStore = defineStore({

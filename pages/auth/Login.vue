@@ -3,7 +3,6 @@ import { useLayout } from '@/layouts/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layouts/AppConfig.vue';
 import { useAuthStore } from '~/stores/auth';
-import toast from 'primevue/toast/Toast.vue';
 const { layoutConfig } = useLayout();
 const email = ref('');
 const password = ref('');
@@ -18,7 +17,7 @@ definePageMeta({
 
 const auth_store = useAuthStore();
 
-toast = useToast();
+const toast = useToast();
 async function onLogInSubmit() {
     try {
         await auth_store.login(email.value, password.value);
