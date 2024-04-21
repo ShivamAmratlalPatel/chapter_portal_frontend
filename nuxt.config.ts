@@ -13,7 +13,7 @@ export default defineNuxtConfig({
             ]
         }
     },
-    modules: ['nuxt-primevue', '@pinia/nuxt'],
+    modules: ['nuxt-primevue', '@pinia/nuxt', '@nuxt/test-utils/module'],
     runtimeConfig: {
         public: {
             apiUrl: process.env.API_URL || 'http://localhost:9000'
