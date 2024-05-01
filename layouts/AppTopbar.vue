@@ -16,7 +16,7 @@ onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
 const logoUrl = computed(() => {
-    if (useRoute().params?.chapterid) {
+    if (useRoute().path.includes('chapters') && useRoute().params?.chapterid) {
         return `/layout/images/logos/${useRoute().params.chapterid}.jpg`;
     } else {
         return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;

@@ -17,6 +17,22 @@ const health_data = ref();
 const editingRows = ref();
 const columns = ref([]);
 
+const toggleOverlay = (event) => {
+    for (let i = 0; i < columns.value.length; i++) {
+        if (columns.value[i].field === event.field) {
+            columns.value[i].overlay_panel = true;
+        }
+    }
+};
+
+const close = (event) => {
+    for (let i = 0; i < columns.value.length; i++) {
+        if (columns.value[i].field === event.field) {
+            columns.value[i].overlay_panel = false;
+        }
+    }
+};
+
 const fetchDataSection = async (section_id: string) => {
     try {
         // Make the API call
@@ -96,7 +112,19 @@ async function saveHealthScore(data) {
     <h3>{{ props.zone }}</h3>
     <div>
         <DataTable v-model:editing-rows="editingRows" :value="health_data" striped-rows show-gridlines edit-mode="row" @row-edit-save="(event) => saveHealthScore(event)">
-            <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header">
+            <Column v-for="col of columns" :key="col.field" :field="col.field">
+                <template #header>
+                    {{ col.header }}
+                    <div v-if="col.rag_guide">
+                        <Button icon="pi pi-question" text raised rounded class="ml-2" @click="toggleOverlay(col)" />
+                        <Dialog :header="'RAG Guide: ' + col.header" v-model:visible="col.overlay_panel" :breakpoints="{ '960px': '75vw' }" :style="{ width: '30vw' }" :modal="true">
+                            <p class="line-height-3 m-0">{{ col.rag_guide }}</p>
+                            <template #footer>
+                                <Button label="Ok" @click="close(col)" icon="pi pi-check" class="p-button-outlined" />
+                            </template>
+                        </Dialog>
+                    </div>
+                </template>
                 <template #editor="{ data, field }">
                     <InputText v-model="data[field]" />
                 </template>
