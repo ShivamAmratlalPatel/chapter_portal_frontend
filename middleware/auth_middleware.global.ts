@@ -1,6 +1,7 @@
 import { useAuthStore } from '~/stores/auth';
 
 export default defineNuxtRouteMiddleware((to, from) => {
+    useAuthStore().check_logged_in();
     if (to.path.includes('internal')) {
         if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'admin') {
             return;

@@ -118,7 +118,7 @@ async function saveHealthScore(data) {
                     <div v-if="col.rag_guide">
                         <Button icon="pi pi-question" text raised rounded class="ml-2" @click="toggleOverlay(col)" />
                         <Dialog :header="'RAG Guide: ' + col.header" v-model:visible="col.overlay_panel" :breakpoints="{ '960px': '75vw' }" :style="{ width: '30vw' }" :modal="true">
-                            <p class="line-height-3 m-0">{{ col.rag_guide }}</p>
+                            <pre>{{ col.rag_guide }}</pre>
                             <template #footer>
                                 <Button label="Ok" @click="close(col)" icon="pi pi-check" class="p-button-outlined" />
                             </template>

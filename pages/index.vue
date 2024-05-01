@@ -32,7 +32,7 @@ async function onLogInSubmit() {
         } else {
             if (useAuthStore().user?.user_type === 'chapter') {
                 if (useAuthStore().user?.chapter_id) {
-                    useRouter().push(`/chapters/${useAuthStore().user?.chapter_id}`);
+                    useRouter().push('/chapters');
                 } else {
                     useRouter().push('/auth/error');
                 }

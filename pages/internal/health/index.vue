@@ -16,10 +16,6 @@ const columns = ref([
         header: 'name'
     },
     {
-        field: 'email',
-        header: 'email'
-    },
-    {
         field: 'zone',
         header: 'zone'
     }
@@ -38,7 +34,7 @@ async function nextChapters() {
 
 async function openChapter(chapter_id) {
     const router = useRouter();
-    router.push(`/health/${chapter_id}`);
+    router.push(`/internal/health/${chapter_id}`);
 }
 
 async function previousChapters() {
@@ -80,15 +76,13 @@ onBeforeMount(() => {
     <h1>Chapters</h1>
     <div v-if="chapters_store.chapters">
         <span>Search: </span> <span><InputText v-model="filter_search" type="text" @update:model-value="filterTicket" /> </span>
-        <div class="flow-root">
-            <Button v-if="chapters_store.chapters.previous" label="Previous" class="float-left" color="primary" @click="previousChapters" />
-            <Button v-if="chapters_store.chapters.next" label="Next" class="float-right" color="primary" @click="nextChapters" />
-        </div>
-        <br />
-        <br />
-        <br />
+
         <DataTable :value="chapters_store.chapters.results" striped-rows @row-click="(event) => openChapter(event.data.id)">
             <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header" />
         </DataTable>
+        <div class="relative">
+            <Button v-if="chapters_store.chapters.previous" label="Previous Page" class="absolute left-0" color="primary" @click="previousChapters" />
+            <Button v-if="chapters_store.chapters.next" label="Next Page" class="absolute right-0" color="primary" @click="nextChapters" />
+        </div>
     </div>
 </template>

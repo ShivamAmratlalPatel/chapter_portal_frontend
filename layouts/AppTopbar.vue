@@ -15,9 +15,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
+
 const logoUrl = computed(() => {
-    if (useRoute().path.includes('chapters') && useRoute().params?.chapterid) {
-        return `/layout/images/logos/${useRoute().params.chapterid}.jpg`;
+    if (useAuthStore().user?.chapter_id) {
+        return `/layout/images/logos/${useAuthStore().user?.chapter_id}.jpg`;
     } else {
         return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;
     }
@@ -92,10 +93,13 @@ onBeforeMount(() => {
 
 <template>
     <div class="layout-topbar">
-        <router-link :to="'/chapters/' + useChaptersStore().chapter?.id" class="layout-topbar-logo">
+        <router-link v-if="useAuthStore().user?.chapter_id && useChaptersStore().chapter?.name" :to="'/chapters/' + useChaptersStore().chapter?.id" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
             <span v-if="useAuthStore().user?.chapter_id && useChaptersStore().chapter?.name"> {{ useChaptersStore().chapter.name }} Portal </span>
-            <span v-else>Chapter Portal</span>
+        </router-link>
+        <router-link v-else to="/internal/health" class="layout-topbar-logo">
+            <img :src="logoUrl" alt="logo" />
+            <span>Internal Portal</span>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">
