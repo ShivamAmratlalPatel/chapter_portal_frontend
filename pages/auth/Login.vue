@@ -28,8 +28,21 @@ async function onLogInSubmit() {
             life: 3000
         });
 
-        const router = useRouter();
-        router.push('/');
+        if (useRoute().query?.next) {
+            useRouter().push((useRoute().query as any).next);
+        } else {
+            if (useAuthStore().user?.user_type === 'chapter') {
+                if (useAuthStore().user?.chapter_id) {
+                    useRouter().push(`/chapters/${useAuthStore().user?.chapter_id}`);
+                } else {
+                    useRouter().push('/auth/error');
+                }
+            } else if (useAuthStore().user?.user_type === 'admin') {
+                useRouter().push('/internal/health');
+            } else {
+                useRouter().push('/auth/error');
+            }
+        }
     } catch {
         toast.add({
             severity: 'error',

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, onBeforeMount } from 'vue';
 import { useLayout } from './composables/layout';
 import { useRouter } from 'vue-router';
+import { useChaptersStore } from '~/stores/chapters';
+import { useAuthStore } from '~/stores/auth';
 const { layoutConfig, onMenuToggle } = useLayout();
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
@@ -14,11 +16,19 @@ onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
 const logoUrl = computed(() => {
-    return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;
+    if (useRoute().params?.chapterid) {
+        return `/layout/images/logos/${useRoute().params.chapterid}.jpg`;
+    } else {
+        return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;
+    }
 });
 
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
+    if (useAuthStore().loggedIn) {
+        useAuthStore().logout();
+    }
+    router.push('/auth/login');
 };
 
 const onSettingsClick = () => {
@@ -58,13 +68,34 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
+
+async function fetchData(chapter_id: string | null = null) {
+    if (chapter_id) {
+        try {
+            // Make the API call
+            await useChaptersStore().fetchChapter(chapter_id);
+        } catch (error) {
+            // Handle any errors here
+            console.error('fetchData');
+            console.error(error);
+        }
+    }
+}
+
+onBeforeMount(() => {
+    // Call fetchData when the component is about to be mounted
+    if (useAuthStore().user?.chapter_id) {
+        fetchData(useAuthStore().user.chapter_id);
+    }
+});
 </script>
 
 <template>
     <div class="layout-topbar">
-        <router-link to="/" class="layout-topbar-logo">
+        <router-link :to="'/chapters/' + useChaptersStore().chapter?.id" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
-            <span>NHSF (UK) Chapter Portal</span>
+            <span v-if="useAuthStore().user?.chapter_id && useChaptersStore().chapter?.name"> {{ useChaptersStore().chapter.name }} Portal </span>
+            <span v-else>Chapter Portal</span>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">

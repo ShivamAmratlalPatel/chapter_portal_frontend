@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import AppConfig from '@/layouts/AppConfig.vue';
+import { useAuthStore } from '~/stores/auth';
 
 definePageMeta({
     layout: false
 });
+
+function goToLogin() {
+    useAuthStore().logout();
+    useRouter().push({
+        path: '/auth/login',
+        query: {
+            next: useRoute().query?.next
+        }
+    });
+}
 </script>
 
 <template>
@@ -21,7 +32,7 @@ definePageMeta({
                         <img src="/demo/images/access/asset-access.svg" alt="Access denied" class="mb-5" width="80%" />
                         <div class="col-12 mt-5 text-center">
                             <i class="pi pi-fw pi-arrow-left text-blue-500 mr-2" style="vertical-align: center"></i>
-                            <router-link to="/" class="text-blue-500">Go to Dashboard</router-link>
+                            <Button @click="goToLogin" class="btn btn-primary">Go to Login</Button>
                         </div>
                     </div>
                 </div>

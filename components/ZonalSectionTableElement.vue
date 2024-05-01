@@ -69,7 +69,6 @@ onBeforeRouteUpdate((newRoute) => {
 const toast = useToast();
 
 async function saveHealthScore(data) {
-    console.log(data);
     const chapter_id = data.newData.chapter_id;
     delete data.newData.chapter_id;
     delete data.newData.chapter;
