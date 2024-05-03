@@ -11,9 +11,9 @@ const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;
 });
 
-// definePageMeta({
-//     layout: false
-// });
+definePageMeta({
+    layout: false
+});
 
 const auth_store = useAuthStore();
 
@@ -27,6 +27,7 @@ async function onLogInSubmit() {
             detail: 'Logged in successfully',
             life: 3000
         });
+
         if (useRoute().query?.next) {
             useRouter().push((useRoute().query as any).next);
         } else {

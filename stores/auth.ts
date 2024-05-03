@@ -69,14 +69,13 @@ export const useAuthStore = defineStore({
                 })
             });
 
-            const token = resp.access_token;
-
             // decode JWT token to get user data
-            const user: any = jwt_decode(resp.access_token);
+            const user: any = await jwt_decode(resp.access_token);
 
-            store(token, user);
+            store(resp.access_token, user);
 
             this.user = user;
+            this.token = resp.access_token;
             this.loggedIn = true;
         },
         logout() {

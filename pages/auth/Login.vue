@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useLayout } from '@/layouts/composables/layout';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import AppConfig from '@/layouts/AppConfig.vue';
 import { useAuthStore } from '~/stores/auth';
+
 const { layoutConfig } = useLayout();
 const email = ref('');
 const password = ref('');
@@ -18,6 +19,7 @@ definePageMeta({
 const auth_store = useAuthStore();
 
 const toast = useToast();
+
 async function onLogInSubmit() {
     try {
         await auth_store.login(email.value, password.value);
@@ -96,6 +98,7 @@ async function onLogInSubmit() {
     transform: scale(1.6);
     margin-right: 1rem;
 }
+
 .pi-eye-slash {
     transform: scale(1.6);
     margin-right: 1rem;
