@@ -118,11 +118,6 @@ const model = ref([
                                 icon: 'pi pi-fw pi-file',
                                 items: [
                                     {
-                                        label: '40 free icebreakers',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/events-coordinators/ice-breakers/40-free-icebreakers'
-                                    },
-                                    {
                                         label: 'Ice Breaker Ideas',
                                         icon: 'pi pi-fw pi-file',
                                         to: '/chapters/chapter-resource-centre/events-coordinators/ice-breakers/ice-breaker-ideas'

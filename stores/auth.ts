@@ -84,6 +84,7 @@ export const useAuthStore = defineStore({
 
             this.loggedIn = false;
             this.user = null;
+            this.token = null;
         },
         async check_logged_in() {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
@@ -97,12 +98,18 @@ export const useAuthStore = defineStore({
                 });
             } catch (error) {
                 const router = useRouter();
-                return router.push({
-                    path: '/auth/login',
-                    query: {
-                        next: router.currentRoute.value.fullPath
-                    }
-                });
+                if (router.currentRoute.value.path === '/auth/login') {
+                    return router.push({
+                        path: '/auth/login'
+                    });
+                } else {
+                    return router.push({
+                        path: '/auth/login',
+                        query: {
+                            next: router.currentRoute.value.path
+                        }
+                    });
+                }
             }
         },
         async register(full_name: string, username: string, email: string, password: string) {

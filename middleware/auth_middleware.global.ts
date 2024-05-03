@@ -27,7 +27,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
             });
         }
     } else if (to.path.includes('auth')) {
-        useAuthStore().logout();
+        if (useAuthStore().loggedIn) {
+            useAuthStore().logout();
+        }
         return;
     } else if (to.path === '/') {
         useAuthStore().logout();
