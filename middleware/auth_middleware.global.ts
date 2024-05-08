@@ -15,6 +15,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
             });
         }
     } else if (to.path.includes('chapters')) {
+        if (to.path.includes('chapter-resource-centre')) {
+            return;
+        }
         if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'chapter') {
             useAuthStore().check_logged_in();
             return;
