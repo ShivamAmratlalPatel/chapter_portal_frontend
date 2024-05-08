@@ -88,32 +88,6 @@ const model = ref([
                                 ]
                             },
                             {
-                                label: 'Event Templates',
-                                icon: 'pi pi-fw pi-file',
-                                items: [
-                                    {
-                                        label: 'Coach/Transport List Template',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/events-coordinators/event-templates/coach-transport-list-template'
-                                    },
-                                    {
-                                        label: 'Guest List Template',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/events-coordinators/event-templates/guest-list-template'
-                                    },
-                                    {
-                                        label: 'Procurement Template',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/events-coordinators/event-templates/procurement-template'
-                                    },
-                                    {
-                                        label: 'Timetable Template',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/events-coordinators/event-templates/timetable-template'
-                                    }
-                                ]
-                            },
-                            {
                                 label: 'Ice Breakers',
                                 icon: 'pi pi-fw pi-file',
                                 items: [
@@ -123,16 +97,6 @@ const model = ref([
                                         to: '/chapters/chapter-resource-centre/events-coordinators/ice-breakers/ice-breaker-ideas'
                                     }
                                 ]
-                            },
-                            {
-                                label: 'Event Summary',
-                                icon: 'pi pi-fw pi-file',
-                                to: '/chapters/chapter-resource-centre/events-coordinators/event-summary'
-                            },
-                            {
-                                label: 'Post Event Evaluation Report',
-                                icon: 'pi pi-fw pi-file',
-                                to: '/chapters/chapter-resource-centre/events-coordinators/post-event-evaluation-report'
                             }
                         ]
                     },
@@ -167,11 +131,6 @@ const model = ref([
                         icon: 'pi pi-fw pi-file',
                         items: [
                             {
-                                label: 'NHSF (UK) Logos',
-                                icon: 'pi pi-fw pi-file',
-                                to: '/chapters/chapter-resource-centre/pr-and-social-media-coordinators/nhsf-uk-logos'
-                            },
-                            {
                                 label: 'Communicating with External Organisations',
                                 icon: 'pi pi-fw pi-file',
                                 to: '/chapters/chapter-resource-centre/pr-and-social-media-coordinators/communicating-with-external-organisations'
@@ -180,11 +139,6 @@ const model = ref([
                                 label: 'Create the Perfect Social Media Post',
                                 icon: 'pi pi-fw pi-file',
                                 to: '/chapters/chapter-resource-centre/pr-and-social-media-coordinators/create-the-perfect-social-media-post'
-                            },
-                            {
-                                label: 'How to Use Premiere Pro',
-                                icon: 'pi pi-fw pi-file',
-                                to: '/chapters/chapter-resource-centre/pr-and-social-media-coordinators/how-to-use-premiere-pro'
                             },
                             {
                                 label: 'Press Release Writing',
@@ -199,55 +153,34 @@ const model = ref([
                         ]
                     },
                     {
-                        label: 'Sanskaar Coordinators',
+                        label: 'Sports Coordinators',
                         icon: 'pi pi-fw pi-file',
                         items: [
                             {
-                                label: 'Aarti Resources',
+                                label: 'Sports Coordinators 101',
                                 icon: 'pi pi-fw pi-file',
-                                items: [
-                                    {
-                                        label: 'Lyric Booklets',
-                                        icon: 'pi pi-fw pi-file',
-                                        items: [
-                                            {
-                                                label: 'Hanuman Chalisa',
-                                                icon: 'pi pi-fw pi-file',
-                                                to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/lyric-booklets/hanuman-chalisa'
-                                            },
-                                            {
-                                                label: 'Jaya Aadhya Shakthi',
-                                                icon: 'pi pi-fw pi-file',
-                                                to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/lyric-booklets/jaya-aadhya-shakthi'
-                                            },
-                                            {
-                                                label: 'Om Jai Jagaadish Hare',
-                                                icon: 'pi pi-fw pi-file',
-                                                to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/lyric-booklets/om-jai-jagaadish-hare'
-                                            },
-                                            {
-                                                label: 'Bhajan Booklet',
-                                                icon: 'pi pi-fw pi-file',
-                                                to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/lyric-booklets/bhajan-booklet'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        label: 'Aarti and Kirtan Links',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/aarti-and-kirtan-links'
-                                    },
-                                    {
-                                        label: 'Elevate your Aarti',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/elevate-your-aarti'
-                                    },
-                                    {
-                                        label: 'Mandir on Campus - A Case Study',
-                                        icon: 'pi pi-fw pi-file',
-                                        to: '/chapters/chapter-resource-centre/sanskaar-coordinators/aarti-resources/mandir-on-campus-a-case-study'
-                                    }
-                                ]
+                                to: '/chapters/chapter-resource-centre/sports-coordinators/sports-coordinators-101'
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Treasurer',
+                        icon: 'pi pi-fw pi-file',
+                        items: [
+                            {
+                                label: 'Treasurer 101',
+                                icon: 'pi pi-fw pi-file',
+                                to: '/chapters/chapter-resource-centre/treasurer/treasurer-101'
+                            },
+                            {
+                                label: 'Treasurer FAQs',
+                                icon: 'pi pi-fw pi-file',
+                                to: '/chapters/chapter-resource-centre/treasurer/treasurer-faqs'
+                            },
+                            {
+                                label: 'Treasurer Handout',
+                                icon: 'pi pi-fw pi-file',
+                                to: '/chapters/chapter-resource-centre/treasurer/treasurer-handout'
                             }
                         ]
                     }
