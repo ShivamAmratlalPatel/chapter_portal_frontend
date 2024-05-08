@@ -4,6 +4,7 @@ import { useLayout } from './composables/layout';
 import { useRouter } from 'vue-router';
 import { useChaptersStore } from '~/stores/chapters';
 import { useAuthStore } from '~/stores/auth';
+
 const { layoutConfig, onMenuToggle } = useLayout();
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
@@ -97,9 +98,13 @@ onBeforeMount(() => {
             <img :src="logoUrl" alt="logo" />
             <span v-if="useAuthStore().user?.chapter_id && useChaptersStore().chapter?.name"> {{ useChaptersStore().chapter.name }} Portal </span>
         </router-link>
-        <router-link v-else to="/internal/health" class="layout-topbar-logo">
+        <router-link v-else-if="useAuthStore.loggedIn" to="/internal/health" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
             <span>Internal Portal</span>
+        </router-link>
+        <router-link v-else to="/chapters/chapter-resource-centre" class="layout-topbar-logo">
+            <img :src="logoUrl" alt="logo" />
+            <span>Chapter Resource Centre</span>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">

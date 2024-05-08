@@ -4,30 +4,6 @@ import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
     {
-        label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/chapters' }]
-    },
-    {
-        label: 'Managing your Society',
-        items: [
-            {
-                label: 'Finance',
-                icon: 'pi pi-fw pi-money-bill',
-                to: '/chapters/finance'
-            },
-            {
-                label: 'Events',
-                icon: 'pi pi-fw pi-sitemap',
-                to: '/chapters/events'
-            },
-            {
-                label: 'Social Media',
-                icon: 'pi pi-fw pi-camera',
-                to: '/chapters/social-media'
-            }
-        ]
-    },
-    {
         label: 'Resources',
         icon: 'pi pi-fw pi-folder',
         items: [
