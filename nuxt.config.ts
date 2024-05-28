@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     app: {
         head: {
-            title: 'Sakai Vue',
+            title: 'Chapter Portal',
             link: [
                 {
                     id: 'theme-css',
