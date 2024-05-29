@@ -16,20 +16,12 @@ export const useSectionsStore = defineStore({
     }),
     actions: {
         async fetchSections() {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
-            this.sections = await apiFetch('sections', {
-                baseURL: runtimeConfig.public.apiUrl
-            });
+            this.sections = await apiFetch('sections', {});
 
             return this.sections;
         },
         async fetchSection(id: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
-            this.section = await apiFetch(`section/${id}`, {
-                baseURL: runtimeConfig.public.apiUrl
-            });
+            this.section = await apiFetch(`section/${id}`, {});
 
             return this.section;
         }

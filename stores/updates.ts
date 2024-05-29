@@ -11,10 +11,7 @@ export const useUpdatesStore = defineStore({
     }),
     actions: {
         async fetchChaptersUpdates(chapter_id: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
             this.chaptersUpdates = await apiFetch(`/chapter_update/chapter/${chapter_id}`, {
-                baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }
@@ -23,11 +20,8 @@ export const useUpdatesStore = defineStore({
             return this.chaptersUpdates;
         },
         async saveChapterUpdate(update_id: string, chapter_id: string, update_date: string, update_text: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
             return await apiFetch(`/chapter_update/${update_id}`, {
                 method: 'PUT',
-                baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 },
@@ -39,10 +33,7 @@ export const useUpdatesStore = defineStore({
             });
         },
         async fetchSectionsUpdate(chapter_id: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
             this.sectionsUpdates = await apiFetch(`/section_update/section/${chapter_id}`, {
-                baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }
@@ -51,11 +42,34 @@ export const useUpdatesStore = defineStore({
             return this.sectionsUpdates;
         },
         async saveSectionUpdate(update_id: string, section_id: string, update_date: string, update_text: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
-
             return await apiFetch(`/section_update/${update_id}`, {
                 method: 'PUT',
-                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                },
+                body: {
+                    section_id: section_id,
+                    update_date: update_date,
+                    update_text: update_text
+                }
+            });
+        },
+        async postChapterUpdate(chapter_id: string, update_date: string, update_text: string) {
+            return await apiFetch(`/chapter_update`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                },
+                body: {
+                    chapter_id: chapter_id,
+                    update_date: update_date,
+                    update_text: update_text
+                }
+            });
+        },
+        async postSectionUpdate(section_id: string, update_date: string, update_text: string) {
+            return await apiFetch(`/section_update`, {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 },
