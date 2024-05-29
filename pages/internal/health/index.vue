@@ -34,7 +34,7 @@ async function nextChapters() {
 
 async function openChapter(chapter_id) {
     const router = useRouter();
-    router.push(`/internal/health/${chapter_id}`);
+    router.push(`/internal/chapters/${chapter_id}`);
 }
 
 async function previousChapters() {

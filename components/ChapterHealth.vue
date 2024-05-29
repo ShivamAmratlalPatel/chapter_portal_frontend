@@ -15,8 +15,7 @@ async function fetchChapterDetails(chapter_id: string) {
 async function fetchData() {
     try {
         // Make the API call
-        const route = useRoute();
-        const chapter_id = route.params.chapterid;
+        const chapter_id = useRouter().currentRoute.value.params.chapterid;
         await fetchChapterDetails(chapter_id);
     } catch (error) {
         // Handle any errors here
@@ -27,7 +26,6 @@ async function fetchData() {
 
 onMounted(() => {
     // Call fetchData when the component is about to be mounted
-    reloadNuxtApp();
     fetchData();
 });
 

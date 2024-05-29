@@ -38,8 +38,7 @@ async function fetchSectionData(section_id: string) {
 async function fetchData() {
     try {
         // Make the API call
-        const route = useRoute();
-        await fetchSectionData(route.params.sectionid);
+        await fetchSectionData(useRouter().currentRoute.value.params.sectionid);
     } catch (error) {
         // Handle any errors here
         console.error('fetchSectionData');
