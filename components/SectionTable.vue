@@ -60,7 +60,6 @@ onBeforeMount(() => {
 });
 
 onBeforeRouteUpdate((newRoute) => {
-    // Call fetchData when the route is about to be updated
     fetchSectionData(newRoute.params.sectionid);
 });
 </script>

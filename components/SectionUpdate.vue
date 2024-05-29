@@ -3,13 +3,22 @@ import { onBeforeMount } from 'vue';
 import { useUpdatesStore } from '~/stores/updates';
 import { useSectionsStore } from '~/stores/sections';
 
-const sectionUpdate = ref();
+async function fetchSectionData(section_id: string) {
+    try {
+        // Make the API call
+        await useSectionsStore().fetchSection(section_id);
+    } catch (error) {
+        // Handle any errors here
+        console.error('fetchSection');
+        console.error(error);
+    }
+}
 
 async function fetchData() {
     // Fetch data from the server
     try {
         // Make the API call
-        sectionUpdate.value = await useUpdatesStore().fetchSectionsUpdate(useRouter().currentRoute.value.params.sectionid);
+        await useUpdatesStore().fetchSectionsUpdate(useRouter().currentRoute.value.params.sectionid);
     } catch (error) {
         // Handle the error
         console.error(error);
@@ -21,8 +30,14 @@ onBeforeMount(() => {
     fetchData();
 });
 
+onBeforeRouteUpdate((newRoute) => {
+    fetchSectionData(newRoute.params.sectionid);
+    useUpdatesStore().fetchSectionsUpdate(newRoute.params.sectionid);
+});
+
 import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { useChaptersStore } from '~/stores/chapters';
 
 const columns = ref([
     { field: 'update_date', header: 'Date' },
@@ -76,7 +91,7 @@ const isPositiveInteger = (val) => {
     <div class="card p-fluid">
         <DataTable
             v-model:filters="filters"
-            :value="sectionUpdate"
+            :value="useUpdatesStore().sectionsUpdates"
             editMode="cell"
             @cell-edit-complete="onCellEditComplete"
             filterDisplay="row"

@@ -3,13 +3,11 @@ import { onBeforeMount } from 'vue';
 import { useChaptersStore } from '~/stores/chapters';
 import { useUpdatesStore } from '~/stores/updates';
 
-const chapterUpdate = ref();
-
 async function fetchData() {
     // Fetch data from the server
     try {
         // Make the API call
-        chapterUpdate.value = await useUpdatesStore().fetchChaptersUpdates(useRouter().currentRoute.value.params.chapterid);
+        await useUpdatesStore().fetchChaptersUpdates(useRouter().currentRoute.value.params.chapterid);
     } catch (error) {
         // Handle the error
         console.error(error);
@@ -66,6 +64,15 @@ const isPositiveInteger = (val) => {
 
     return n !== Infinity && String(n) === str && n >= 0;
 };
+
+async function fetchChapterDetails(chapter_id: string) {
+    await chapters_store.fetchChapter(chapter_id);
+}
+
+onBeforeRouteUpdate((newRoute) => {
+    fetchChapterDetails(newRoute.params.chapterid);
+    useUpdatesStore().fetchChaptersUpdates(newRoute.params.sectionid);
+});
 </script>
 
 <template>
@@ -74,7 +81,7 @@ const isPositiveInteger = (val) => {
     <div class="card p-fluid">
         <DataTable
             v-model:filters="filters"
-            :value="chapterUpdate"
+            :value="useUpdatesStore().chaptersUpdates"
             editMode="cell"
             @cell-edit-complete="onCellEditComplete"
             filterDisplay="row"
