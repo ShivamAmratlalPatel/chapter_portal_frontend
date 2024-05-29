@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
+import apiFetch from '~/composables/apiFetch';
 
 export interface ChapterRead {
     id: string;
@@ -16,6 +17,7 @@ export interface NextPage {
     cursor_column: string;
     cursor_id: string;
 }
+
 export interface PaginatedChapters {
     next: NextPage | null;
     previous: NextPage | null;
@@ -64,7 +66,7 @@ export const useChaptersStore = defineStore({
                 endpoint = `chapters?filter_by=${filter_search}`;
             }
 
-            this.chapters = await $fetch(endpoint, {
+            this.chapters = await apiFetch(endpoint, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 
@@ -73,7 +75,7 @@ export const useChaptersStore = defineStore({
         async fetchAllChapters() {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.chapter_sidebar_list = await $fetch('all_chapters', {
+            this.chapter_sidebar_list = await apiFetch('all_chapters', {
                 baseURL: runtimeConfig.public.apiUrl
             });
 
@@ -82,7 +84,7 @@ export const useChaptersStore = defineStore({
         async fetchChapter(chapter_id: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.chapter = await $fetch(`chapter/${chapter_id}`, {
+            this.chapter = await apiFetch(`chapter/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 
@@ -91,7 +93,7 @@ export const useChaptersStore = defineStore({
         async fetchZones() {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.zones = await $fetch('zones', {
+            this.zones = await apiFetch('zones', {
                 baseURL: runtimeConfig.public.apiUrl
             });
 
@@ -100,7 +102,7 @@ export const useChaptersStore = defineStore({
         async fetchChapterByZone(zone: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.chapter_list = await $fetch(`chapters/${zone}`, {
+            this.chapter_list = await apiFetch(`chapters/${zone}`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 

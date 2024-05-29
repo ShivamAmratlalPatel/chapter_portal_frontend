@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
+import apiFetch from '~/composables/apiFetch';
 
 export interface Question {
     field: string;
@@ -15,7 +16,7 @@ export const useQuestionssStore = defineStore({
         async fetchQuestionChapter(section_id: number) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.questions = await $fetch(`questions/section/${section_id}`, {
+            this.questions = await apiFetch(`questions/section/${section_id}`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 
@@ -24,7 +25,7 @@ export const useQuestionssStore = defineStore({
         async fetchQuestionSection(section_id: number) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.questions = await $fetch(`questions/section/${section_id}/section`, {
+            this.questions = await apiFetch(`questions/section/${section_id}/section`, {
                 baseURL: runtimeConfig.public.apiUrl
             });
 

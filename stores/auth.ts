@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { RuntimeConfig } from 'nuxt/schema';
 import { useAuthStorage } from '~/composables/auth';
+import apiFetch from '~/composables/apiFetch';
 
 export interface AuthUser {
     exp: number;
@@ -90,11 +91,8 @@ export const useAuthStore = defineStore({
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
             try {
-                await $fetch('/users/me', {
-                    baseURL: runtimeConfig.public.apiUrl,
-                    headers: {
-                        Authorization: `Bearer ${useAuthStore().token}`
-                    }
+                await apiFetch('/users/me', {
+                    baseURL: runtimeConfig.public.apiUrl
                 });
             } catch (error) {
                 const router = useRouter();

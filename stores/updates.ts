@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
 import { useAuthStore } from '~/stores/auth';
+import apiFetch from '~/composables/apiFetch';
 
 export const useUpdatesStore = defineStore({
     id: 'updates',
@@ -12,7 +13,7 @@ export const useUpdatesStore = defineStore({
         async fetchChaptersUpdates(chapter_id: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.chaptersUpdates = await $fetch(`/chapter_update/chapter/${chapter_id}`, {
+            this.chaptersUpdates = await apiFetch(`/chapter_update/chapter/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -24,7 +25,7 @@ export const useUpdatesStore = defineStore({
         async saveChapterUpdate(update_id: string, chapter_id: string, update_date: string, update_text: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            return await $fetch(`/chapter_update/${update_id}`, {
+            return await apiFetch(`/chapter_update/${update_id}`, {
                 method: 'PUT',
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
@@ -40,7 +41,7 @@ export const useUpdatesStore = defineStore({
         async fetchSectionsUpdate(chapter_id: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            this.sectionsUpdates = await $fetch(`/section_update/section/${chapter_id}`, {
+            this.sectionsUpdates = await apiFetch(`/section_update/section/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -52,7 +53,7 @@ export const useUpdatesStore = defineStore({
         async saveSectionUpdate(update_id: string, section_id: string, update_date: string, update_text: string) {
             const runtimeConfig: RuntimeConfig = useRuntimeConfig();
 
-            return await $fetch(`/section_update/${update_id}`, {
+            return await apiFetch(`/section_update/${update_id}`, {
                 method: 'PUT',
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
