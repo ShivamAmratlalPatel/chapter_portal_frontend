@@ -21,11 +21,9 @@ onBeforeMount(() => {
     fetchData();
 });
 
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
-import { ProductService } from '@/service/ProductService';
 
-const products = ref();
 const columns = ref([
     { field: 'update_date', header: 'Date' },
     { field: 'update_text', header: 'Update' }
@@ -36,7 +34,7 @@ const filters = ref({
 });
 
 const onCellEditComplete = (event) => {
-    useUpdatesStore().saveUpdate(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
+    useUpdatesStore().saveChapterUpdate(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
 
     let { data, newValue, field } = event;
 
