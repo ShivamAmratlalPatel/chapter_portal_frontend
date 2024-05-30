@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
 import { useAuthStore } from '~/stores/auth';
-import apiFetch from '~/composables/apiFetch';
 
 export const useVisitsStore = defineStore({
     id: 'visits',
@@ -10,7 +9,10 @@ export const useVisitsStore = defineStore({
     }),
     actions: {
         async fetchChaptersVisits(chapter_id: string) {
-            this.chapterVisits = await apiFetch(`/visits/chapter/${chapter_id}`, {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            this.chapterVisits = await $fetch(`/visits/chapter/${chapter_id}`, {
+                baseURL: runtimeConfig.public.apiURL,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }
@@ -19,7 +21,10 @@ export const useVisitsStore = defineStore({
             return this.chapterVisits;
         },
         async saveChapterVisit(visit_id: string, chapter_ids: Array<string>, visit_date: string, visit_category_id: string, comments: string) {
-            return await apiFetch(`/visit/${visit_id}`, {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            return await $fetch(`/visit/${visit_id}`, {
+                baseURL: runtimeConfig.public.apiURL,
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -33,9 +38,10 @@ export const useVisitsStore = defineStore({
             });
         },
         async postChapterVisit(chapter_ids: Array<string>, visit_date: string, visit_category_id: string, comments: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const config: RuntimeConfig = useRuntimeConfig();
 
-            return await apiFetch(`/visit`, {
+            return await $fetch(`/visit`, {
+                baseURL: config.public.apiURL,
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
-import apiFetch from '~/composables/apiFetch';
+import { useAuthStore } from '~/stores/auth';
 
 export const useHealthStore = defineStore({
     id: 'health',
@@ -9,18 +9,21 @@ export const useHealthStore = defineStore({
     }),
     actions: {
         async fetchHealth(chapter_id: string, year: number, month: number, question_id: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/question/${question_id}`, {
-                baseURL: runtimeConfig.public.apiUrl
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/question/${question_id}`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.health;
         },
         async saveHealth(chapter_id: string, data: any) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            await apiFetch(`health/${chapter_id}`, {
+            await $fetch(`health/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 method: 'PUT',
                 body: data
@@ -29,35 +32,47 @@ export const useHealthStore = defineStore({
             return this.health;
         },
         async fetchHealthBySection(chapter_id: string, section_id: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await apiFetch(`health/${chapter_id}/section/${section_id}`, {
-                baseURL: runtimeConfig.public.apiUrl
+            this.health = await $fetch(`health/${chapter_id}/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
         },
         async fetchHealthByZone(zone: string, year: number, month: number, section_id: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await apiFetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {
-                baseURL: runtimeConfig.public.apiUrl
+            this.health = await $fetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.health;
         },
         async fetchAverageChapterHealth(chapter_id: string, year: number, month: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
-                baseURL: runtimeConfig.public.apiUrl
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.health;
         },
         async fetchChapterComments(chapter_id: string, year: number, month: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
-                baseURL: runtimeConfig.public.apiUrl
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.health;

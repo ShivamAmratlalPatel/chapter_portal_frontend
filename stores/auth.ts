@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import type { RuntimeConfig } from 'nuxt/schema';
 import { useAuthStorage } from '~/composables/auth';
-import apiFetch from '~/composables/apiFetch';
+import { useRouter } from 'vue-router';
 
 export interface AuthUser {
     exp: number;
@@ -53,17 +53,17 @@ export const useAuthStore = defineStore({
         async login(email: string, password: string) {
             const { store } = useAuthStorage();
 
-            const config: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig = useNuxtApp().$config;
             const resp: TokenResponse = await $fetch<TokenResponse>('token', {
-                baseURL: config.public.apiUrl,
+                baseURL: runtimeConfig.public.apiUrl,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
                     grant_type: 'password',
-                    client_id: config.public.clientId,
-                    client_secret: config.public.clientSecret,
+                    client_id: runtimeConfig.public.clientId,
+                    client_secret: runtimeConfig.public.clientSecret,
                     username: email,
                     password: password,
                     scope: ''
@@ -88,14 +88,18 @@ export const useAuthStore = defineStore({
             this.token = null;
         },
         async check_logged_in() {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             try {
-                await apiFetch('/users/me', {
-                    baseURL: runtimeConfig.public.apiUrl
+                await $fetch('/users/me', {
+                    baseURL: runtimeConfig.public.apiUrl,
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
                 });
             } catch (error) {
                 const router = useRouter();
+
                 if (router.currentRoute.value.path === '/auth/login') {
                     return router.push({
                         path: '/auth/login'
@@ -111,7 +115,7 @@ export const useAuthStore = defineStore({
             }
         },
         async register(full_name: string, username: string, email: string, password: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             await $fetch('/users', {
                 baseURL: runtimeConfig.public.apiUrl,
@@ -125,7 +129,7 @@ export const useAuthStore = defineStore({
             });
         },
         async chapterRegister(full_name: string, username: string, email: string, password: string, chapter_id: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             const resp = await $fetch('/users/chapter', {
                 baseURL: runtimeConfig.public.apiUrl,
