@@ -2,10 +2,6 @@
 import { reloadNuxtApp } from '#app';
 import { useChaptersStore } from '~/stores/chapters';
 
-definePageMeta({
-    layout: 'health'
-});
-
 const chapters_store = useChaptersStore();
 
 async function fetchChapterDetails(chapter_id: string) {

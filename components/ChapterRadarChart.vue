@@ -5,9 +5,6 @@ import { useSectionsStore } from '~/stores/sections';
 import { useChaptersStore } from '~/stores/chapters';
 import { useHealthStore } from '~/stores/health';
 
-definePageMeta({
-    layout: 'health'
-});
 
 const props = defineProps<{
     chapter_id: string;
@@ -118,7 +115,8 @@ const close = () => {
 </script>
 
 <template>
-    <Dialog :header="chapter_name" v-model:visible="display" :breakpoints="{ '960px': '75vw' }" :style="{ width: '30vw' }" :modal="true">
+    <Dialog :header="chapter_name" v-model:visible="display" :breakpoints="{ '960px': '75vw' }"
+            :style="{ width: '30vw' }" :modal="true">
         <p class="line-height-3 m-0">
             <div v-for="(comment, index) in chapter_comments" :key="index">
                 {{ comment.section }} - {{ comment.comment }}
