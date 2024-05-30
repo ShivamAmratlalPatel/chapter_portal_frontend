@@ -4,11 +4,31 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (to.path.includes('chapter-resource-centre')) {
         return;
     } else {
-        useAuthStore().check_logged_in();
+        try {
+            useAuthStore().check_logged_in();
+        } catch (e) {
+            return useRouter().push({
+                path: '/auth/login',
+                query: {
+                    next: to.path
+                }
+            });
+        }
         if (to.path.includes('internal')) {
             if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'admin') {
-                useAuthStore().check_logged_in();
-                return;
+                useAuthStore()
+                    .check_logged_in()
+                    .then((r) => {
+                        return;
+                    })
+                    .catch((e) => {
+                        return useRouter().push({
+                            path: '/auth/access',
+                            query: {
+                                next: to.path
+                            }
+                        });
+                    });
             } else {
                 return useRouter().push({
                     path: '/auth/access',
@@ -19,8 +39,19 @@ export default defineNuxtRouteMiddleware((to, from) => {
             }
         } else if (to.path.includes('chapters')) {
             if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'chapter') {
-                useAuthStore().check_logged_in();
-                return;
+                useAuthStore()
+                    .check_logged_in()
+                    .then((r) => {
+                        return;
+                    })
+                    .catch((e) => {
+                        return useRouter().push({
+                            path: '/auth/access',
+                            query: {
+                                next: to.path
+                            }
+                        });
+                    });
             } else {
                 return useRouter().push({
                     path: '/auth/access',
@@ -47,6 +78,13 @@ export default defineNuxtRouteMiddleware((to, from) => {
             } else if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'admin') {
                 return useRouter().push({
                     path: '/internal/health'
+                });
+            } else {
+                return useRouter().push({
+                    path: '/auth/login',
+                    query: {
+                        next: to.path
+                    }
                 });
             }
         }
