@@ -9,12 +9,19 @@ export const useHealthStore = defineStore({
     }),
     actions: {
         async fetchHealth(chapter_id: string, year: number, month: number, question_id: number) {
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/question/${question_id}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/question/${question_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.health;
         },
         async saveHealth(chapter_id: string, data: any) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
             await apiFetch(`health/${chapter_id}`, {
+                baseURL: runtimeConfig.public.apiUrl,
                 method: 'PUT',
                 body: data
             });
@@ -22,20 +29,36 @@ export const useHealthStore = defineStore({
             return this.health;
         },
         async fetchHealthBySection(chapter_id: string, section_id: number) {
-            this.health = await apiFetch(`health/${chapter_id}/section/${section_id}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await apiFetch(`health/${chapter_id}/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
         },
         async fetchHealthByZone(zone: string, year: number, month: number, section_id: number) {
-            this.health = await apiFetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await apiFetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.health;
         },
         async fetchAverageChapterHealth(chapter_id: string, year: number, month: number) {
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.health;
         },
         async fetchChapterComments(chapter_id: string, year: number, month: number) {
-            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.health = await apiFetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.health;
         }

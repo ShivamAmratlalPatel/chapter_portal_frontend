@@ -14,12 +14,20 @@ export const useQuestionssStore = defineStore({
     }),
     actions: {
         async fetchQuestionChapter(section_id: number) {
-            this.questions = await apiFetch(`questions/section/${section_id}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.questions = await apiFetch(`questions/section/${section_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.questions;
         },
         async fetchQuestionSection(section_id: number) {
-            this.questions = await apiFetch(`questions/section/${section_id}/section`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.questions = await apiFetch(`questions/section/${section_id}/section`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.questions;
         }

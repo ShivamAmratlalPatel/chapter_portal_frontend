@@ -56,6 +56,8 @@ export const useChaptersStore = defineStore({
     }),
     actions: {
         async fetchChapters(next_page: NextPage | null = null, filter_search: string | null = null) {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
             let endpoint = 'chapters';
             if (next_page !== null) {
                 endpoint = `${endpoint}?cursor_id=${next_page.cursor_id}&cursor_column=${next_page.cursor_column}&previous=${next_page.previous}`;
@@ -64,27 +66,45 @@ export const useChaptersStore = defineStore({
                 endpoint = `chapters?filter_by=${filter_search}`;
             }
 
-            this.chapters = await apiFetch(endpoint, {});
+            this.chapters = await apiFetch(endpoint, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.chapters;
         },
         async fetchAllChapters() {
-            this.chapter_sidebar_list = await apiFetch('all_chapters', {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.chapter_sidebar_list = await apiFetch('all_chapters', {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.chapter_sidebar_list;
         },
         async fetchChapter(chapter_id: string) {
-            this.chapter = await apiFetch(`chapter/${chapter_id}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.chapter = await apiFetch(`chapter/${chapter_id}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.chapter;
         },
         async fetchZones() {
-            this.zones = await apiFetch('zones', {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.zones = await apiFetch('zones', {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.zones;
         },
         async fetchChapterByZone(zone: string) {
-            this.chapter_list = await apiFetch(`chapters/${zone}`, {});
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
+            this.chapter_list = await apiFetch(`chapters/${zone}`, {
+                baseURL: runtimeConfig.public.apiUrl
+            });
 
             return this.chapter_list;
         }

@@ -88,8 +88,12 @@ export const useAuthStore = defineStore({
             this.token = null;
         },
         async check_logged_in() {
+            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+
             try {
-                await apiFetch('/users/me', {});
+                await apiFetch('/users/me', {
+                    baseURL: runtimeConfig.public.apiUrl
+                });
             } catch (error) {
                 const router = useRouter();
                 if (router.currentRoute.value.path === '/auth/login') {
