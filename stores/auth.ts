@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import type { RuntimeConfig } from 'nuxt/schema';
 import { useAuthStorage } from '~/composables/auth';
-import { useRouter } from 'vue-router';
 
 export interface AuthUser {
     exp: number;
