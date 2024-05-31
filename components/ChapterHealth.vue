@@ -21,6 +21,7 @@ async function fetchData() {
 }
 
 onMounted(() => {
+    reloadNuxtApp();
     // Call fetchData when the component is about to be mounted
     fetchData();
 });

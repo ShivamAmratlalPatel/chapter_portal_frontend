@@ -97,19 +97,23 @@ export const useAuthStore = defineStore({
                     }
                 });
             } catch (error) {
-                const router = useRouter();
+                try {
+                    const router = useRouter();
 
-                if (router.currentRoute.value.path === '/auth/login') {
-                    return router.push({
-                        path: '/auth/login'
-                    });
-                } else {
-                    return router.push({
-                        path: '/auth/login',
-                        query: {
-                            next: router.currentRoute.value.path
-                        }
-                    });
+                    if (router.currentRoute.value.path === '/auth/login') {
+                        return router.push({
+                            path: '/auth/login'
+                        });
+                    } else {
+                        return router.push({
+                            path: '/auth/login',
+                            query: {
+                                next: router.currentRoute.value.path
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error redirecting to login:', error);
                 }
             }
         },

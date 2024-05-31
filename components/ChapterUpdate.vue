@@ -14,6 +14,11 @@ async function fetchData() {
     }
 }
 
+async function chapterUpdates() {
+    console.log('chapterUpdated');
+    await fetchData();
+}
+
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
@@ -66,7 +71,7 @@ const isPositiveInteger = (val) => {
 };
 
 async function fetchChapterDetails(chapter_id: string) {
-    await chapters_store.fetchChapter(chapter_id);
+    await useChaptersStore().fetchChapter(chapter_id);
 }
 
 onBeforeRouteUpdate((newRoute) => {
@@ -77,6 +82,8 @@ onBeforeRouteUpdate((newRoute) => {
 
 <template>
     <h1 v-if="useChaptersStore().chapter && useChaptersStore().chapter.name">{{ useChaptersStore().chapter.name }} Updates</h1>
+
+    <AddChapterUpdate :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterUpdate>
 
     <div class="card p-fluid">
         <DataTable

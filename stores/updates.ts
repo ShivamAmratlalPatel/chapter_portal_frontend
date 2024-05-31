@@ -64,6 +64,38 @@ export const useUpdatesStore = defineStore({
                     update_text: update_text
                 }
             });
+        },
+        async postChapterUpdate(chapter_id: string, update_date: string, update_text: string) {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            return await $fetch(`/chapter_update`, {
+                method: 'POST',
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                },
+                body: {
+                    chapter_id: chapter_id,
+                    update_date: update_date,
+                    update_text: update_text
+                }
+            });
+        },
+        async postSectionUpdate(section_id: string, update_date: string, update_text: string) {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            return await $fetch(`/section_update`, {
+                method: 'POST',
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                },
+                body: {
+                    section_id: section_id,
+                    update_date: update_date,
+                    update_text: update_text
+                }
+            });
         }
     }
 });
