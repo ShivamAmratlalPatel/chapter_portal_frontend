@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { useChaptersStore } from '~/stores/chapters';
-import { useUpdatesStore } from '~/stores/updates';
+import { useVisitsStore } from '~/stores/visits';
+import { ref } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
 
 async function fetchData() {
     // Fetch data from the server
@@ -14,14 +16,14 @@ async function fetchData() {
     }
 }
 
+async function chapterUpdates() {
+    await fetchData();
+}
+
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
 });
-
-import { ref } from 'vue';
-import { FilterMatchMode } from 'primevue/api';
-import { useVisitsStore } from '~/stores/visits';
 
 const columns = ref([
     { field: 'visit_date', header: 'Date' },
@@ -33,7 +35,7 @@ const filters = ref({
 });
 
 const onCellEditComplete = (event) => {
-    useVisitsStore().saveChapterVisit(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
+    useVisitsStore().saveChapterVisit(event.data.id, [event.data.chapter_ids], event.data.update_date, null, event.data.update_text);
 
     let { data, newValue, field } = event;
 
@@ -72,12 +74,14 @@ async function fetchChapterDetails(chapter_id: string) {
 
 onBeforeRouteUpdate((newRoute) => {
     fetchChapterDetails(newRoute.params.chapterid);
-    useVisitsStore().fetchChaptersVisits(newRoute.params.chapterid);
+    useVisitsStore().fetchChaptersVisits(newRoute.params.sectionid);
 });
 </script>
 
 <template>
     <h1 v-if="useChaptersStore().chapter && useChaptersStore().chapter.name">{{ useChaptersStore().chapter.name }} Visits</h1>
+
+    <AddChapterVisit :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterVisit>
 
     <div class="card p-fluid">
         <DataTable

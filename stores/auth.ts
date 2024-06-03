@@ -87,35 +87,43 @@ export const useAuthStore = defineStore({
             this.token = null;
         },
         async check_logged_in() {
-            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
-
-            try {
-                await $fetch('/users/me', {
-                    baseURL: runtimeConfig.public.apiUrl,
-                    headers: {
-                        Authorization: `Bearer ${this.token}`
-                    }
-                });
-            } catch (error) {
-                try {
-                    const router = useRouter();
-
-                    if (router.currentRoute.value.path === '/auth/login') {
-                        return router.push({
-                            path: '/auth/login'
-                        });
-                    } else {
-                        return router.push({
-                            path: '/auth/login',
-                            query: {
-                                next: router.currentRoute.value.path
-                            }
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error redirecting to login:', error);
+            if (this.loggedIn) {
+                if (this.user.exp > Date.now() / 1000) {
+                    return;
                 }
             }
+
+            this.logout();
+            // const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+            //
+            // try {
+            //     await $fetch('/users/me', {
+            //         baseURL: runtimeConfig.public.apiUrl,
+            //         headers: {
+            //             Authorization: `Bearer ${this.token}`
+            //         }
+            //     });
+            //     console.log('User is logged in');
+            // } catch (error) {
+            //     try {
+            //         const router = useRouter();
+            //
+            //         if (router.currentRoute.value.path === '/auth/login') {
+            //             return router.push({
+            //                 path: '/auth/login'
+            //             });
+            //         } else {
+            //             return router.push({
+            //                 path: '/auth/login',
+            //                 query: {
+            //                     next: router.currentRoute.value.path
+            //                 }
+            //             });
+            //         }
+            //     } catch (error) {
+            //         console.error('Error redirecting to login:', error);
+            //     }
+            // }
         },
         async register(full_name: string, username: string, email: string, password: string) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;

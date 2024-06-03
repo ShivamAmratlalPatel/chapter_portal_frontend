@@ -11,14 +11,12 @@ export const useVisitsStore = defineStore({
         async fetchChaptersVisits(chapter_id: string) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.chapterVisits = await $fetch(`/visits/chapter/${chapter_id}`, {
+            return await $fetch(`/visits/chapter/${chapter_id}`, {
                 baseURL: runtimeConfig.public.apiURL,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
                 }
             });
-
-            return this.chapterVisits;
         },
         async saveChapterVisit(visit_id: string, chapter_ids: Array<string>, visit_date: string, visit_category_id: string, comments: string) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
