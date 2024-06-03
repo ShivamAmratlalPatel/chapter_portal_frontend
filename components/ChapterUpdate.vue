@@ -15,7 +15,6 @@ async function fetchData() {
 }
 
 async function chapterUpdates() {
-    console.log('chapterUpdated');
     await fetchData();
 }
 
@@ -76,7 +75,7 @@ async function fetchChapterDetails(chapter_id: string) {
 
 onBeforeRouteUpdate((newRoute) => {
     fetchChapterDetails(newRoute.params.chapterid);
-    useUpdatesStore().fetchChaptersUpdates(newRoute.params.sectionid);
+    useUpdatesStore().fetchChaptersUpdates(newRoute.params.chapterid);
 });
 </script>
 

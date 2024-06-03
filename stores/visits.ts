@@ -9,45 +9,29 @@ export const useVisitsStore = defineStore({
     }),
     actions: {
         async fetchChaptersVisits(chapter_id: string) {
-            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+            this.chapterVisits = await apiFetch(`/visits/chapter/${chapter_id}`, {});
 
-            return await $fetch(`/visits/chapter/${chapter_id}`, {
-                baseURL: runtimeConfig.public.apiURL,
-                headers: {
-                    Authorization: `Bearer ${useAuthStore().token}`
-                }
-            });
+            return this.chapterVisits;
         },
-        async saveChapterVisit(visit_id: string, chapter_ids: Array<string>, visit_date: string, visit_category_id: string, comments: string) {
-            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
-
-            return await $fetch(`/visit/${visit_id}`, {
-                baseURL: runtimeConfig.public.apiURL,
+        async saveChapterVisit(visit_id: string, chapter_id: string, commencement_date: string, visit_date: string, comments: string) {
+            return await apiFetch(`/visit/${visit_id}`, {
                 method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${useAuthStore().token}`
-                },
+
                 body: {
-                    chapter_ids,
+                    chapter_ids: [chapter_id],
+                    commencement_date,
                     visit_date,
-                    visit_category_id,
                     comments
                 }
             });
         },
-        async postChapterVisit(chapter_ids: Array<string>, visit_date: string, visit_category_id: string, comments: string) {
-            const config: RuntimeConfig = useRuntimeConfig();
-
-            return await $fetch(`/visit`, {
-                baseURL: config.public.apiURL,
+        async postChapterVisit(chapter_id: string, visit_date: string, comments: string) {
+            return await apiFetch(`/visit`, {
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${useAuthStore().token}`
-                },
+
                 body: {
-                    chapter_ids,
+                    chapter_ids: [chapter_id],
                     visit_date,
-                    visit_category_id,
                     comments
                 }
             });

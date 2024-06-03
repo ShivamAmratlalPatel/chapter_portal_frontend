@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { useChaptersStore } from '~/stores/chapters';
-import { useVisitsStore } from '~/stores/visits';
-import { ref } from 'vue';
-import { FilterMatchMode } from 'primevue/api';
 
 async function fetchData() {
     // Fetch data from the server
@@ -25,17 +22,23 @@ onBeforeMount(() => {
     fetchData();
 });
 
+import { ref } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+import { useVisitsStore } from '~/stores/visits';
+
 const columns = ref([
     { field: 'visit_date', header: 'Date' },
+    { field: 'user_name', header: 'Individual' },
     { field: 'comments', header: 'Comments' }
 ]);
 const filters = ref({
     visit_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    user_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
     comments: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const onCellEditComplete = (event) => {
-    useVisitsStore().saveChapterVisit(event.data.id, [event.data.chapter_ids], event.data.update_date, null, event.data.update_text);
+    useVisitsStore().saveChapterVisit(event.data.id, event.data.chapter_id, event.data.visit_date, event.data.comments);
 
     let { data, newValue, field } = event;
 
@@ -74,7 +77,7 @@ async function fetchChapterDetails(chapter_id: string) {
 
 onBeforeRouteUpdate((newRoute) => {
     fetchChapterDetails(newRoute.params.chapterid);
-    useVisitsStore().fetchChaptersVisits(newRoute.params.sectionid);
+    useVisitsStore().fetchChaptersVisits(newRoute.params.chapterid);
 });
 </script>
 

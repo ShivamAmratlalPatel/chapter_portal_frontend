@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useUpdatesStore } from '~/stores/updates';
+import { useCommitteesStore } from '~/stores/committees';
 
 const emit = defineEmits(['updatesubmit']);
 
@@ -14,19 +14,20 @@ const props = defineProps({
 const visible = ref(false);
 
 const date = ref(new Date());
-const update = ref(null);
+const name = ref(null);
+const position = ref(null);
 
 const toast = useToast();
 
 async function save() {
-    // Save the update
+    // Save the visit
     visible.value = false;
     try {
-        await useUpdatesStore().postChapterUpdate(props.chapterId, date.value.toISOString().slice(0, 10), update.value);
+        await useCommitteesStore().postChapterCommittee(props.chapterId, date.value.toISOString().slice(0, 10), name.value, position.value);
         toast.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Update saved successfully',
+            detail: 'Committee Member saved successfully',
             life: 3000
         });
         emit('updatesubmit');
@@ -44,19 +45,25 @@ async function save() {
 <template>
     <Toast></Toast>
     <div class="card flex justify-content-center">
-        <Button label="Add Update" @click="visible = true" />
-        <Dialog v-model:visible="visible" modal header="Add Update" :style="{ width: '25rem' }">
-            <span class="p-text-secondary block mb-5">Add a chapter update.</span>
+        <Button label="Add Committee Member" @click="visible = true" />
+        <Dialog v-model:visible="visible" modal header="Add Committee Member" :style="{ width: '25rem' }">
+            <span class="p-text-secondary block mb-5">Add a chapter committee member.</span>
             <div class="flex align-items-center gap-3 mb-5">
                 <FloatLabel>
-                    <label for="username" class="font-semibold w-6rem">Date</label>
+                    <label for="username" class="font-semibold w-6rem">Commencement Date</label>
                     <Calendar id="username" v-model="date" dateFormat="dd/mm/yy" showIcon :showOnFocus="false" />
                 </FloatLabel>
             </div>
             <div class="flex align-items-center gap-3 mb-5">
                 <FloatLabel>
-                    <label for="email" class="font-semibold w-6rem">Update</label>
-                    <Textarea v-model="update" autoResize rows="5" cols="30" />
+                    <label for="email" class="font-semibold w-6rem">Name</label>
+                    <InputText v-model="name" autoResize rows="5" cols="30" />
+                </FloatLabel>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <FloatLabel>
+                    <label for="email" class="font-semibold w-6rem">Role</label>
+                    <InputText v-model="position" autoResize rows="5" cols="30" />
                 </FloatLabel>
             </div>
             <div class="flex justify-content-end gap-2">
