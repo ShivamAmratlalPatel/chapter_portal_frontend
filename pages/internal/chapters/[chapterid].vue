@@ -22,6 +22,9 @@ const nestedRouteItems = ref([
     },
     {
         label: 'Committee'
+    },
+    {
+        label: 'Allocations'
     }
 ]);
 
@@ -47,6 +50,9 @@ const updateTab = (tab: TabMenuChangeEvent) => {
     </div>
     <div v-else-if="currentTab === 3">
         <ChapterCommittee></ChapterCommittee>
+    </div>
+    <div v-else-if="currentTab === 4">
+        <ChapterAllocations></ChapterAllocations>
     </div>
 </template>
 
