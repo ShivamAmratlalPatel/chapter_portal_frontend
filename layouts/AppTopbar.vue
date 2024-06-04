@@ -24,7 +24,11 @@ const logoUrl = computed(() => {
         return `/layout/images/${layoutConfig.darkTheme.value ? 'om-orange' : 'om-orange'}.png`;
     }
 });
+const op = ref(null);
 
+const toggle = (event) => {
+    op.value.toggle(event);
+};
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
     if (useAuthStore().loggedIn) {
@@ -98,7 +102,7 @@ onBeforeMount(() => {
             <img :src="logoUrl" alt="logo" />
             <span v-if="useAuthStore().user?.chapter_id && useChaptersStore().chapter?.name"> {{ useChaptersStore().chapter.name }} Portal </span>
         </router-link>
-        <router-link v-else-if="useAuthStore.loggedIn" to="/internal/health" class="layout-topbar-logo">
+        <router-link v-else-if="useAuthStore().loggedIn" to="/internal/health" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
             <span>Internal Portal</span>
         </router-link>
@@ -116,18 +120,20 @@ onBeforeMount(() => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
-            </button>
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-user"></i>
-                <span>Profile</span>
-            </button>
-            <button @click="onSettingsClick()" class="p-link layout-topbar-button">
-                <i class="pi pi-cog"></i>
-                <span>Settings</span>
-            </button>
+            <div>
+                <button @click="toggle" class="p-link layout-topbar-button">
+                    <i class="pi pi-user"></i>
+                    <span>Profile</span>
+                </button>
+                <OverlayPanel ref="op" appendTo="body" :showCloseIcon="true">
+                    <div class="ml-auto">
+                        <button @click="onTopBarMenuButton" class="p-link">
+                            <i class="pi pi-sign-out"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </OverlayPanel>
+            </div>
         </div>
     </div>
 </template>
