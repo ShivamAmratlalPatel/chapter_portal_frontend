@@ -71,18 +71,13 @@ const isPositiveInteger = (val) => {
     return n !== Infinity && String(n) === str && n >= 0;
 };
 
-async function fetchChapterDetails(chapter_id: string) {
-    await useChaptersStore().fetchChapter(chapter_id);
-}
-
 onBeforeRouteUpdate((newRoute) => {
-    fetchChapterDetails(newRoute.params.chapterid);
     useUpdatesStore().fetchChaptersUpdates(newRoute.params.chapterid);
 });
 </script>
 
 <template>
-    <h1 v-if="useChaptersStore().chapter && useChaptersStore().chapter.name">{{ useChaptersStore().chapter.name }} Updates</h1>
+    <h2>Updates</h2>
 
     <AddChapterUpdate :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterUpdate>
 

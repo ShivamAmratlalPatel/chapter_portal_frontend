@@ -21,10 +21,7 @@ export const useHealthStore = defineStore({
             return this.health;
         },
         async saveHealth(chapter_id: string, data: any) {
-            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
-
-            await $fetch(`health/${chapter_id}`, {
-                baseURL: runtimeConfig.public.apiUrl,
+            await apiFetch(`health/${chapter_id}`, {
                 method: 'PUT',
                 body: data
             });
@@ -69,6 +66,18 @@ export const useHealthStore = defineStore({
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
+            });
+
+            return this.health;
+        },
+        async fetchLatestHealth(chapter_id: string) {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            this.health = await $fetch(`health/${chapter_id}/latest`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`

@@ -1,37 +1,6 @@
-<script setup lang="ts">
-import { reloadNuxtApp } from '#app';
-import { useChaptersStore } from '~/stores/chapters';
-
-const chapters_store = useChaptersStore();
-
-async function fetchChapterDetails(chapter_id: string) {
-    await chapters_store.fetchChapter(chapter_id);
-}
-
-async function fetchData() {
-    try {
-        // Make the API call
-        const chapter_id = useRouter().currentRoute.value.params.chapterid;
-        await fetchChapterDetails(chapter_id);
-    } catch (error) {
-        // Handle any errors here
-        console.error('fetchChapters');
-        console.error(error);
-    }
-}
-
-onMounted(() => {
-    reloadNuxtApp();
-    // Call fetchData when the component is about to be mounted
-    fetchData();
-});
-
-onBeforeRouteUpdate((newRoute) => {
-    fetchChapterDetails(newRoute.params.chapterid);
-});
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <h1 v-if="chapters_store.chapter && chapters_store.chapter.name">{{ chapters_store.chapter.name }} Health Portal</h1>
+    <h2>Health</h2>
     <HealthTable></HealthTable>
 </template>

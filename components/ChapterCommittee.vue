@@ -70,18 +70,13 @@ const isPositiveInteger = (val) => {
     return n !== Infinity && String(n) === str && n >= 0;
 };
 
-async function fetchChapterDetails(chapter_id: string) {
-    await useChaptersStore().fetchChapter(chapter_id);
-}
-
 onBeforeRouteUpdate((newRoute) => {
-    fetchChapterDetails(newRoute.params.chapterid);
     useCommitteesStore().fetchChaptersCommittees(newRoute.params.chapterid);
 });
 </script>
 
 <template>
-    <h1 v-if="useChaptersStore().chapter && useChaptersStore().chapter.name">{{ useChaptersStore().chapter.name }} Committee</h1>
+    <h2>Committee</h2>
 
     <AddChapterCommittee :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterCommittee>
 

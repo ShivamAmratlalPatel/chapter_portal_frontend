@@ -68,18 +68,13 @@ const isPositiveInteger = (val) => {
     return n !== Infinity && String(n) === str && n >= 0;
 };
 
-async function fetchChapterDetails(chapter_id: string) {
-    await useChaptersStore().fetchChapter(chapter_id);
-}
-
 onBeforeRouteUpdate((newRoute) => {
-    fetchChapterDetails(newRoute.params.chapterid);
     useAllocationsStore().fetchChaptersAllocations(newRoute.params.chapterid);
 });
 </script>
 
 <template>
-    <h1 v-if="useChaptersStore().chapter && useChaptersStore().chapter.name">{{ useChaptersStore().chapter.name }} Allocations</h1>
+    <h2>Allocations</h2>
 
     <div class="card p-fluid">
         <DataTable
