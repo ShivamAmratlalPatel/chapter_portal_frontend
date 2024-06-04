@@ -28,10 +28,12 @@ import { FilterMatchMode } from 'primevue/api';
 
 const columns = ref([
     { field: 'update_date', header: 'Date' },
+    { field: 'user_name', header: 'Name' },
     { field: 'update_text', header: 'Update' }
 ]);
 const filters = ref({
     update_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    user_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
     update_text: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 

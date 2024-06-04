@@ -28,7 +28,7 @@ import { useVisitsStore } from '~/stores/visits';
 
 const columns = ref([
     { field: 'visit_date', header: 'Date' },
-    { field: 'user_name', header: 'Individual' },
+    { field: 'user_name', header: 'Name' },
     { field: 'comments', header: 'Comments' }
 ]);
 const filters = ref({
