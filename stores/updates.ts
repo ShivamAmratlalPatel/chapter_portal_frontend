@@ -96,6 +96,18 @@ export const useUpdatesStore = defineStore({
                     update_text: update_text
                 }
             });
+        },
+        async fetchZoneUpdate(zone: string) {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            this.chaptersUpdates = await $fetch(`/chapter_update/zone/${zone}`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
+            });
+
+            return this.chaptersUpdates;
         }
     }
 });
