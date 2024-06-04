@@ -25,6 +25,10 @@ async function fetchData() {
     }
 }
 
+async function sectionUpdates() {
+    await fetchData();
+}
+
 onBeforeMount(() => {
     // Call fetchData when the component is about to be mounted
     fetchData();
@@ -41,10 +45,12 @@ import { useChaptersStore } from '~/stores/chapters';
 
 const columns = ref([
     { field: 'update_date', header: 'Date' },
+    { field: 'user_name', header: 'Name' },
     { field: 'update_text', header: 'Update' }
 ]);
 const filters = ref({
     update_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    user_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
     update_text: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
@@ -87,6 +93,8 @@ const isPositiveInteger = (val) => {
     <div v-if="useSectionsStore().section && useSectionsStore().section.name">
         <h1>{{ useSectionsStore().section.name }} Team Updates</h1>
     </div>
+
+    <AddSectionUpdate :section-id="useRouter().currentRoute.value.params.sectionid" @updatesubmit="sectionUpdates()"></AddSectionUpdate>
 
     <div class="card p-fluid">
         <DataTable
