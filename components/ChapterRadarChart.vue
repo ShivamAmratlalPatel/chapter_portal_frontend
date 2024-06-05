@@ -10,6 +10,7 @@ const props = defineProps<{
     chapter_id: string;
     year: string;
     month: string;
+    week: string
 }>();
 
 const chapters_store = useChaptersStore();
@@ -38,7 +39,7 @@ async function setColorOptions() {
     surfaceBorder.value = documentStyle.value.getPropertyValue('--surface-border');
 }
 
-async function setChart(chapter_id: string, year: string, month: string) {
+async function setChart(chapter_id: string, year: string, month: string, week: string) {
     await setColorOptions();
     chapter_name.value = (await chapters_store.fetchChapter(chapter_id)).name;
     radarData.value = {
@@ -51,7 +52,7 @@ async function setChart(chapter_id: string, year: string, month: string) {
                 pointBorderColor: documentStyle.value.getPropertyValue('--indigo-400'),
                 pointHoverBackgroundColor: textColor,
                 pointHoverBorderColor: documentStyle.value.getPropertyValue('--indigo-400'),
-                data: await health_store.fetchAverageChapterHealth(chapter_id, year, month)
+                data: await health_store.fetchAverageChapterHealth(chapter_id, year, month, week)
             }
         ]
     };
@@ -74,32 +75,39 @@ async function setChart(chapter_id: string, year: string, month: string) {
             }
         }
     };
-    chapter_comments.value = await health_store.fetchChapterComments(chapter_id, year, month);
+    chapter_comments.value = await health_store.fetchChapterComments(chapter_id, year, month, week);
 }
 
 onBeforeMount(() => {
     setColorOptions();
-    setChart(props.chapter_id, props.year, props.month);
+    setChart(props.chapter_id, props.year, props.month, props.week);
 });
 
 watch(
     () => props.chapter_id,
     async (newChapterId) => {
-        setChart(newChapterId, props.year, props.month);
+        setChart(newChapterId, props.year, props.month, props.week);
     }
 );
 
 watch(
     () => props.year,
     async (newYear) => {
-        setChart(props.chapter_id, newYear, props.month);
+        setChart(props.chapter_id, newYear, props.month, props.week);
     }
 );
 
 watch(
     () => props.month,
     async (newMonth) => {
-        setChart(props.chapter_id, props.year, newMonth);
+        setChart(props.chapter_id, props.year, newMonth, props.week);
+    }
+);
+
+watch(
+    () => props.week,
+    async (newWeek) => {
+        setChart(props.chapter_id, props.year, props.month, newWeek);
     }
 );
 

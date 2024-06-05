@@ -8,10 +8,10 @@ export const useHealthStore = defineStore({
         health: null
     }),
     actions: {
-        async fetchHealth(chapter_id: string, year: number, month: number, question_id: number) {
+        async fetchHealth(chapter_id: string, year: number, month: number, week: number, question_id: number) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/question/${question_id}`, {
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/week/${week}/question/${question_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -38,10 +38,10 @@ export const useHealthStore = defineStore({
                 }
             });
         },
-        async fetchHealthByZone(zone: string, year: number, month: number, section_id: number) {
+        async fetchHealthByZone(zone: string, year: number, month: number, week: number, section_id: number) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await $fetch(`health/zone/${zone}/year/${year}/month/${month}/section/${section_id}`, {
+            this.health = await $fetch(`health/zone/${zone}/year/${year}/month/${month}/week/${week}/section/${section_id}`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -50,10 +50,10 @@ export const useHealthStore = defineStore({
 
             return this.health;
         },
-        async fetchAverageChapterHealth(chapter_id: string, year: number, month: number) {
+        async fetchAverageChapterHealth(chapter_id: string, year: number, month: number, week: number) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/average`, {
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/week/${week}/average`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
@@ -62,10 +62,10 @@ export const useHealthStore = defineStore({
 
             return this.health;
         },
-        async fetchChapterComments(chapter_id: string, year: number, month: number) {
+        async fetchChapterComments(chapter_id: string, year: number, month: number, week: number) {
             const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
-            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/comments`, {
+            this.health = await $fetch(`health/${chapter_id}/year/${year}/month/${month}/week/${week}/comments`, {
                 baseURL: runtimeConfig.public.apiUrl,
                 headers: {
                     Authorization: `Bearer ${useAuthStore().token}`
