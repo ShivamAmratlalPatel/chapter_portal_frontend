@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
-import { useChaptersStore } from '~/stores/chapters';
-import { useActionsStore } from '~/stores/actions';
+import { useMatrixMeetingsStore } from '~/stores/matrix_meetings';
 
 async function fetchData() {
     // Fetch data from the server
     try {
         // Make the API call
-        await useActionsStore().fetchChaptersActions(useRouter().currentRoute.value.params.chapterid);
+        await useMatrixMeetingsStore().fetchZoneMatrixMeeting(useRouter().currentRoute.value.params.zone);
     } catch (error) {
         // Handle the error
         console.error(error);
@@ -25,27 +24,24 @@ onBeforeMount(() => {
 
 import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import AddMatrixMeeting from '~/components/meetings/AddMatrixMeeting.vue';
 
 const columns = ref([
-    { field: 'section_name', header: 'Section' },
-    { field: 'assignee_name', header: 'Assignee' },
-    { field: 'due_date', header: 'Due Date' },
-    { field: 'note', header: 'Note' },
-    { field: 'completed_date', header: 'Completed Date' }
+    { field: 'meeting_date', header: 'Meeting Date' },
+    { field: 'agenda', header: 'Agenda' },
+    { field: 'minutes_link', header: 'Minutes Link' }
 ]);
 const filters = ref({
-    section_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    assignee_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    due_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    note: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    completed_date: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    meeting_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    agenda: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    minutes_link: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const toast = useToast();
 
 async function onCellEditComplete(event) {
     try {
-        await useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.assignee_name, event.data.section_id, event.data.note, event.data.completed_date);
+        await useMatrixMeetingsStore().saveMatrixMeeting(event.data.id, event.data.zone, event.data.meeting_date, event.data.agenda, event.data.minutes_link);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Action updated successfully', life: 3000 });
     } catch {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Action update failed', life: 3000 });
@@ -83,21 +79,21 @@ const isPositiveInteger = (val) => {
 };
 
 onBeforeRouteUpdate((newRoute) => {
-    useActionsStore().fetchChaptersActions(newRoute.params.chapterid);
+    useMatrixMeetingsStore().fetchZoneMatrixMeeting(newRoute.params.zone);
 });
 </script>
 
 <template>
     <Toast></Toast>
 
-    <h2>Actions</h2>
+    <h2>Matrix Meetings</h2>
 
-    <AddChapterAction :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterAction>
+    <AddMatrixMeeting :zone="useRouter().currentRoute.value.params.zone" @updatesubmit="chapterUpdates()"></AddMatrixMeeting>
 
     <div class="card p-fluid">
         <DataTable
             v-model:filters="filters"
-            :value="useActionsStore().chapterActions"
+            :value="useMatrixMeetingsStore().matrixMeetings"
             editMode="cell"
             @cell-edit-complete="onCellEditComplete"
             filterDisplay="row"

@@ -15,7 +15,6 @@ export const useActionsStore = defineStore({
             return this.chapterActions;
         },
         async saveChapterAction(action_id: string, chapter_id: string, assignee_name: string, section_id: string, note: string, due_date: string) {
-            console.log(note);
             return await apiFetch(`/action/${action_id}`, {
                 method: 'PUT',
 
