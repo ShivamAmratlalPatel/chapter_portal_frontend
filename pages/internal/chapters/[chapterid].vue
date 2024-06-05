@@ -12,6 +12,9 @@ const nestedRouteItems = ref([
         label: 'Dashboard'
     },
     {
+        label: 'Actions'
+    },
+    {
         label: 'Health'
     },
     {
@@ -73,18 +76,21 @@ onBeforeRouteUpdate((newRoute) => {
         <ChapterDashboard></ChapterDashboard>
     </div>
     <div v-if="currentTab === 1">
+        <ChapterActions></ChapterActions>
+    </div>
+    <div v-if="currentTab === 2">
         <ChapterHealth></ChapterHealth>
     </div>
-    <div v-else-if="currentTab === 2">
+    <div v-else-if="currentTab === 3">
         <ChapterUpdate></ChapterUpdate>
     </div>
-    <div v-else-if="currentTab === 3">
+    <div v-else-if="currentTab === 4">
         <ChapterVisit></ChapterVisit>
     </div>
-    <div v-else-if="currentTab === 4">
+    <div v-else-if="currentTab === 5">
         <ChapterCommittee></ChapterCommittee>
     </div>
-    <div v-else-if="currentTab === 5">
+    <div v-else-if="currentTab === 6">
         <ChapterAllocations></ChapterAllocations>
     </div>
 </template>
