@@ -41,8 +41,17 @@ const filters = ref({
     completed_date: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const onCellEditComplete = (event) => {
-    useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
+const toast = useToast();
+
+async function onCellEditComplete(event) {
+    console.log(event);
+    console.log(event.data.note);
+    try {
+        await useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.assignee_name, event.data.section_id, event.data.note, event.data.completed_date);
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Action updated successfully', life: 3000 });
+    } catch {
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Action update failed', life: 3000 });
+    }
 
     let { data, newValue, field } = event;
 
@@ -58,7 +67,7 @@ const onCellEditComplete = (event) => {
             else event.preventDefault();
             break;
     }
-};
+}
 
 const isPositiveInteger = (val) => {
     let str = String(val);
@@ -81,6 +90,8 @@ onBeforeRouteUpdate((newRoute) => {
 </script>
 
 <template>
+    <Toast></Toast>
+
     <h2>Actions</h2>
 
     <AddChapterAction :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterAction>
