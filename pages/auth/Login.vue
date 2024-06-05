@@ -40,7 +40,7 @@ async function onLogInSubmit() {
                     useRouter().push('/auth/error');
                 }
             } else if (useAuthStore().user?.user_type === 'admin') {
-                useRouter().push('/internal/health');
+                useRouter().push('/internal');
             } else {
                 useRouter().push('/auth/error');
             }

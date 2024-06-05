@@ -77,7 +77,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
                 });
             } else if (useAuthStore().loggedIn && useAuthStore().user?.user_type === 'admin') {
                 return useRouter().push({
-                    path: '/internal/health'
+                    path: '/internal'
                 });
             } else {
                 return useRouter().push({

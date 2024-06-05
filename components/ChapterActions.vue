@@ -83,6 +83,8 @@ onBeforeRouteUpdate((newRoute) => {
 <template>
     <h2>Actions</h2>
 
+    <AddChapterAction :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterAction>
+
     <div class="card p-fluid">
         <DataTable
             v-model:filters="filters"
