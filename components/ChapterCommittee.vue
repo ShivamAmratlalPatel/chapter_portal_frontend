@@ -37,7 +37,7 @@ const filters = ref({
 });
 
 const onCellEditComplete = (event) => {
-    useCommitteesStore().saveChapterCommittee(event.data.id, event.data.chapter_ids, event.data.update_date, null, event.data.update_text);
+    useCommitteesStore().saveChapterCommittee(event.data.id, event.data.chapter_id, event.data.commencement_date, event.data.name, event.data.position);
 
     let { data, newValue, field } = event;
 
