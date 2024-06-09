@@ -34,6 +34,11 @@ export const useAllocationsStore = defineStore({
                     user_name
                 }
             });
+        },
+        async fetchMyAllocations() {
+            this.chapterAllocations = await apiFetch(`/allocations/me`, {});
+
+            return this.chapterAllocations;
         }
     }
 });

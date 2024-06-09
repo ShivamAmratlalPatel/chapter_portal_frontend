@@ -23,21 +23,21 @@ const toast = useToast();
 
 async function save() {
     // Save the update
-    visible.value = false;
     try {
-        await useActionsStore().postChapterAction(props.chapterId, assignee.value?.full_name, section.value?.id, note.value, date.value);
+        await useActionsStore().postChapterAction(props.chapterId, assignee.value?.full_name, section.value?.id, note.value, date.value.toISOString().slice(0, 10));
         toast.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Update saved successfully',
             life: 3000
         });
+        visible.value = false;
         emit('updatesubmit');
-    } catch {
+    } catch (error) {
         toast.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Failed to save update',
+            detail: `Failed to save update: ${error}`,
             life: 3000
         });
     }

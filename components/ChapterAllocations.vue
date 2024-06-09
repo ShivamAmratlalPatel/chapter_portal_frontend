@@ -42,7 +42,7 @@ async function onCellEditComplete(event) {
         toast.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Committee Member updated successfully',
+            detail: 'Allocation updated successfully',
             life: 3000
         });
     } catch (error) {
@@ -50,7 +50,7 @@ async function onCellEditComplete(event) {
         toast.add({
             severity: 'error',
             summary: 'Error',
-            detail: `Failed to update committee member: ${error}`,
+            detail: `Failed to update allocation: ${error}`,
             life: 3000
         });
     }

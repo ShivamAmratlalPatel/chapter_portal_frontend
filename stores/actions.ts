@@ -14,7 +14,8 @@ export const useActionsStore = defineStore({
 
             return this.chapterActions;
         },
-        async saveChapterAction(action_id: string, chapter_id: string, assignee_name: string, section_id: string, note: string, due_date: string) {
+        async saveChapterAction(action_id: string, chapter_id: string, assignee_name: string, section_id: string, note: string, due_date: string, completed_date: string) {
+            console.log('due_date', due_date);
             return await apiFetch(`/action/${action_id}`, {
                 method: 'PUT',
 
@@ -23,7 +24,8 @@ export const useActionsStore = defineStore({
                     assignee_name: assignee_name,
                     section_id: section_id,
                     note: note,
-                    due_date: due_date
+                    due_date: due_date,
+                    completed_date: completed_date
                 }
             });
         },
@@ -44,6 +46,11 @@ export const useActionsStore = defineStore({
             this.assignees = await apiFetch(`/actions/assignees`, {});
 
             return this.assignees;
+        },
+        async fetchMyActions() {
+            this.chapterActions = await apiFetch(`/actions/me`, {});
+
+            return this.chapterActions;
         }
     }
 });

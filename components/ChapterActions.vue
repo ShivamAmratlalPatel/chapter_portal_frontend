@@ -45,12 +45,14 @@ const filters = ref({
 const toast = useToast();
 
 async function onCellEditComplete(event) {
+    console.log(event);
+    console.log(event.data);
     try {
-        await useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.assignee_name, event.data.section_id, event.data.note, event.data.completed_date);
+        await useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.assignee_name, event.data.section_id, event.data.note, event.data.due_date, event.data.completed_date);
         toast.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Committee Member updated successfully',
+            detail: 'Action updated successfully',
             life: 3000
         });
     } catch (error) {

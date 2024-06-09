@@ -38,6 +38,11 @@ export const useCommitteesStore = defineStore({
                     natcom_buddy_name
                 }
             });
+        },
+        async fetchMyCommitteeAllocations() {
+            this.chapterCommittees = await apiFetch(`/committee/chapter_buddy/me`, {});
+
+            return this.chapterCommittees;
         }
     }
 });
