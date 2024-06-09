@@ -25,6 +25,7 @@ onBeforeMount(() => {
 
 import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { useAllocationsStore } from '~/stores/allocations';
 
 const columns = ref([
     { field: 'update_date', header: 'Date' },
@@ -37,9 +38,26 @@ const filters = ref({
     update_text: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const onCellEditComplete = (event) => {
-    useUpdatesStore().saveChapterUpdate(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
+const toast = useToast();
 
+async function onCellEditComplete(event) {
+    try {
+        await useUpdatesStore().saveChapterUpdate(event.data.id, event.data.chapter_id, event.data.update_date, event.data.update_text);
+        toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Committee Member updated successfully',
+            life: 3000
+        });
+    } catch (error) {
+        await fetchData();
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Failed to update committee member: ${error}`,
+            life: 3000
+        });
+    }
     let { data, newValue, field } = event;
 
     switch (field) {
@@ -54,7 +72,7 @@ const onCellEditComplete = (event) => {
             else event.preventDefault();
             break;
     }
-};
+}
 
 const isPositiveInteger = (val) => {
     let str = String(val);

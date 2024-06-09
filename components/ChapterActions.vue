@@ -25,6 +25,7 @@ onBeforeMount(() => {
 
 import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { useCommitteesStore } from '~/stores/committees';
 
 const columns = ref([
     { field: 'section_name', header: 'Section' },
@@ -46,9 +47,20 @@ const toast = useToast();
 async function onCellEditComplete(event) {
     try {
         await useActionsStore().saveChapterAction(event.data.id, event.data.chapter_id, event.data.assignee_name, event.data.section_id, event.data.note, event.data.completed_date);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Action updated successfully', life: 3000 });
-    } catch {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Action update failed', life: 3000 });
+        toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Committee Member updated successfully',
+            life: 3000
+        });
+    } catch (error) {
+        await fetchData();
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Failed to update committee member: ${error}`,
+            life: 3000
+        });
     }
 
     let { data, newValue, field } = event;

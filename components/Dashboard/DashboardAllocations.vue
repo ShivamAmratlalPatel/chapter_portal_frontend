@@ -34,42 +34,6 @@ const filters = ref({
     user_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
     section_name: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
-const toast = useToast();
-
-async function onCellEditComplete(event) {
-    try {
-        await useAllocationsStore().saveChapterAllocation(event.data.id, event.data.chapter_ids, event.data.update_date, null, event.data.update_text);
-        toast.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Committee Member updated successfully',
-            life: 3000
-        });
-    } catch (error) {
-        await fetchData();
-        toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `Failed to update committee member: ${error}`,
-            life: 3000
-        });
-    }
-
-    let { data, newValue, field } = event;
-
-    switch (field) {
-        case 'quantity':
-        case 'price':
-            if (isPositiveInteger(newValue)) data[field] = newValue;
-            else event.preventDefault();
-            break;
-
-        default:
-            if (newValue.trim().length > 0) data[field] = newValue;
-            else event.preventDefault();
-            break;
-    }
-}
 
 const isPositiveInteger = (val) => {
     let str = String(val);
@@ -94,8 +58,6 @@ onBeforeRouteUpdate((newRoute) => {
 <template>
     <h2>Allocations</h2>
 
-    <AddChapterAllocation :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterAllocation>
-
     <div class="card p-fluid">
         <DataTable
             v-model:filters="filters"
@@ -110,14 +72,7 @@ onBeforeRouteUpdate((newRoute) => {
                 }
             }"
         >
-            <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header" style="width: 25%" sortable filter>
-                <template #filter="{ filterModel, filterCallback }">
-                    <InputText v-model="filterModel.value" v-tooltip.top.focus="'Hit enter key to filter'" type="text" @keydown.enter="filterCallback()" class="p-column-filter" />
-                </template>
-                <template #editor="{ data, field }">
-                    <InputText v-model="data[field]" autofocus />
-                </template>
-            </Column>
+            <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
         </DataTable>
     </div>
 </template>

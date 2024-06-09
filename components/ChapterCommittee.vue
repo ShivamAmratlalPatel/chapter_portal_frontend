@@ -4,6 +4,7 @@ import { useChaptersStore } from '~/stores/chapters';
 import { ref } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { useCommitteesStore } from '~/stores/committees';
+import { useActionsStore } from '~/stores/actions';
 
 async function fetchData() {
     // Fetch data from the server
@@ -28,16 +29,36 @@ onBeforeMount(() => {
 const columns = ref([
     { field: 'commencement_date', header: 'Start Date' },
     { field: 'name', header: 'Name' },
-    { field: 'position', header: 'Role' }
+    { field: 'position', header: 'Role' },
+    { field: 'natcom_buddy_name', header: 'NatCom Buddy' }
 ]);
 const filters = ref({
     commencement_date: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    position: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    position: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    natcom_buddy_name: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const onCellEditComplete = (event) => {
-    useCommitteesStore().saveChapterCommittee(event.data.id, event.data.chapter_id, event.data.commencement_date, event.data.name, event.data.position);
+const toast = useToast();
+
+async function onCellEditComplete(event) {
+    try {
+        await useCommitteesStore().saveChapterCommittee(event.data.id, event.data.chapter_id, event.data.commencement_date, event.data.name, event.data.position, event.data.natcom_buddy_name);
+        toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Committee Member updated successfully',
+            life: 3000
+        });
+    } catch (error) {
+        await fetchData();
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Failed to update committee member: ${error}`,
+            life: 3000
+        });
+    }
 
     let { data, newValue, field } = event;
 
@@ -53,7 +74,7 @@ const onCellEditComplete = (event) => {
             else event.preventDefault();
             break;
     }
-};
+}
 
 const isPositiveInteger = (val) => {
     let str = String(val);
@@ -76,6 +97,8 @@ onBeforeRouteUpdate((newRoute) => {
 </script>
 
 <template>
+    <Toast></Toast>
+
     <h2>Committee</h2>
 
     <AddChapterCommittee :chapter-id="useRouter().currentRoute.value.params.chapterid" @updatesubmit="chapterUpdates()"></AddChapterCommittee>

@@ -13,23 +13,25 @@ export const useAllocationsStore = defineStore({
 
             return this.chapterAllocations;
         },
-        async saveChapterAllocation(allocation_id: string, chapter_id: string, section_id: string) {
+        async saveChapterAllocation(allocation_id: string, chapter_id: string, section_id: string, user_name: string) {
             return await apiFetch(`/allocation/${allocation_id}`, {
                 method: 'PUT',
 
                 body: {
                     chapter_id,
-                    section_id
+                    section_id,
+                    user_name
                 }
             });
         },
-        async postChapterAllocation(chapter_id: string, section_id: string) {
+        async postChapterAllocation(chapter_id: string, section_id: string, user_name: string) {
             return await apiFetch(`/allocation`, {
                 method: 'POST',
 
                 body: {
                     chapter_id,
-                    section_id
+                    section_id,
+                    user_name
                 }
             });
         }

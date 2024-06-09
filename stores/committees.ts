@@ -13,7 +13,7 @@ export const useCommitteesStore = defineStore({
 
             return this.chapterCommittees;
         },
-        async saveChapterCommittee(committee_id: string, chapter_id: string, commencement_date: string, name: string, position: string) {
+        async saveChapterCommittee(committee_id: string, chapter_id: string, commencement_date: string, name: string, position: string, natcom_buddy_name: string) {
             return await apiFetch(`/committee/${committee_id}`, {
                 method: 'PUT',
 
@@ -21,11 +21,12 @@ export const useCommitteesStore = defineStore({
                     chapter_id,
                     commencement_date,
                     name,
-                    position
+                    position,
+                    natcom_buddy_name
                 }
             });
         },
-        async postChapterCommittee(chapter_id: string, commencement_date: string, name: string, position: string) {
+        async postChapterCommittee(chapter_id: string, commencement_date: string, name: string, position: string, natcom_buddy_name: string) {
             return await apiFetch(`/committee`, {
                 method: 'POST',
 
@@ -33,7 +34,8 @@ export const useCommitteesStore = defineStore({
                     chapter_id,
                     commencement_date,
                     name,
-                    position
+                    position,
+                    natcom_buddy_name
                 }
             });
         }
