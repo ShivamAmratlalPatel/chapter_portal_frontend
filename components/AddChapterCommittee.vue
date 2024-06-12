@@ -38,7 +38,7 @@ async function save() {
         toast.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Failed to save update',
+            detail: 'Failed to save committee member',
             life: 3000
         });
     }
@@ -88,7 +88,7 @@ onBeforeMount(() => {
             <div class="align-items-center gap-3 mb-5">
                 <label class="font-semibold w-6rem">Assignee: </label>
                 <br />
-                <Dropdown :options="useActionsStore().assignees" v-model="assignee" option-label="full_name"></Dropdown>
+                <Dropdown :options="useActionsStore().assignees" v-model="natcom_buddy" option-label="full_name"></Dropdown>
             </div>
             <div class="flex justify-content-end gap-2">
                 <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
