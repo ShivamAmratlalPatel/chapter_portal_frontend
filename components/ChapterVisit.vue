@@ -42,7 +42,7 @@ const toast = useToast();
 
 async function onCellEditComplete(event) {
     try {
-        await useVisitsStore().saveChapterVisit(event.data.id, event.data.chapter_id, event.data.visit_date, event.data.comments);
+        await useVisitsStore().saveChapterVisit(event.newData.id, event.newData.chapter_id, event.newData.visit_date, event.newData.comments);
         toast.add({
             severity: 'success',
             summary: 'Success',

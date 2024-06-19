@@ -23,6 +23,15 @@ const toast = useToast();
 
 async function save() {
     // Save the update
+    if (!date.value || !note.value) {
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Due Date or note missing',
+            life: 3000
+        });
+        return;
+    }
     try {
         await useActionsStore().postChapterAction(props.chapterId, assignee.value?.full_name, section.value?.id, note.value, date.value.toISOString().slice(0, 10));
         toast.add({
@@ -74,7 +83,7 @@ onBeforeMount(() => {
         <Dialog v-model:visible="visible" modal header="Add Action" :style="{ width: '25rem' }">
             <span class="p-text-secondary block mb-5">Add an action.</span>
             <div class="align-items-center gap-3 mb-5">
-                <label for="username" class="font-semibold w-6rem">Due Date (can be left blank)</label>
+                <label for="username" class="font-semibold w-6rem">Due Date</label>
                 <br />
                 <Calendar id="username" v-model="date" dateFormat="dd/mm/yy" showIcon :showOnFocus="false" />
             </div>

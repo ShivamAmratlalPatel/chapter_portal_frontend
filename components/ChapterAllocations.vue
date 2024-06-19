@@ -38,7 +38,7 @@ const toast = useToast();
 
 async function onCellEditComplete(event) {
     try {
-        await useAllocationsStore().saveChapterAllocation(event.data.id, event.data.chapter_ids, event.data.update_date, null, event.data.update_text);
+        await useAllocationsStore().saveChapterAllocation(event.newData.id, event.newData.chapter_ids, event.newData.update_date, null, event.newData.update_text);
         toast.add({
             severity: 'success',
             summary: 'Success',

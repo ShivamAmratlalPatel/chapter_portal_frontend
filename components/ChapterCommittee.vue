@@ -43,7 +43,7 @@ const toast = useToast();
 
 async function onCellEditComplete(event) {
     try {
-        await useCommitteesStore().saveChapterCommittee(event.data.id, event.data.chapter_id, event.data.commencement_date, event.data.name, event.data.position, event.data.natcom_buddy_name);
+        await useCommitteesStore().saveChapterCommittee(event.newData.id, event.newData.chapter_id, event.newData.commencement_date, event.newData.name, event.newData.position, event.newData.natcom_buddy_name);
         toast.add({
             severity: 'success',
             summary: 'Success',

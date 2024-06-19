@@ -55,7 +55,7 @@ const filters = ref({
 });
 
 const onCellEditComplete = (event) => {
-    useUpdatesStore().saveSectionUpdate(event.data.id, event.data.section_id, event.data.update_date, event.data.update_text);
+    useUpdatesStore().saveSectionUpdate(event.newData.id, event.newData.section_id, event.newData.update_date, event.newData.update_text);
 
     let { data, newValue, field } = event;
 

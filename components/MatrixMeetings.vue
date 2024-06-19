@@ -41,7 +41,7 @@ const toast = useToast();
 
 async function onCellEditComplete(event) {
     try {
-        await useMatrixMeetingsStore().saveMatrixMeeting(event.data.id, event.data.zone, event.data.meeting_date, event.data.agenda, event.data.minutes_link);
+        await useMatrixMeetingsStore().saveMatrixMeeting(event.newData.id, event.newData.zone, event.newData.meeting_date, event.newData.agenda, event.newData.minutes_link);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Action updated successfully', life: 3000 });
     } catch {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Action update failed', life: 3000 });
