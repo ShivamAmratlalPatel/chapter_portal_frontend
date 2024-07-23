@@ -12,19 +12,10 @@ onMounted(() => {
 
 const nestedRouteItems = ref([
     {
-        label: 'Dashboard'
-    },
-    {
         label: 'Health'
     },
     {
         label: 'Updates'
-    },
-    {
-        label: 'Matrix Meetings'
-    },
-    {
-        label: 'Team Meetings'
     }
 ]);
 
@@ -36,25 +27,14 @@ const updateTab = (tab: TabMenuChangeEvent) => {
 </script>
 
 <template>
-    <h1>{{ useRoute().params.zone }}</h1>
-
-    <div class="mb-5">
+    <div>
         <TabMenu :model="nestedRouteItems" @tabChange="(event: TabMenuChangeEvent) => updateTab(event)" />
     </div>
     <div v-if="currentTab === 0">
-        <h2>Dashboard</h2>
+        <SectionTable></SectionTable>
     </div>
-    <div v-if="currentTab === 1">
-        <ZonalHealth></ZonalHealth>
-    </div>
-    <div v-else-if="currentTab === 2">
-        <ZonalUpdate></ZonalUpdate>
-    </div>
-    <div v-else-if="currentTab === 3">
-        <MatrixMeetings></MatrixMeetings>
-    </div>
-    <div v-else-if="currentTab === 4">
-        <ZonalTeamMeetings></ZonalTeamMeetings>
+    <div v-else-if="currentTab === 1">
+        <SectionUpdate></SectionUpdate>
     </div>
 </template>
 

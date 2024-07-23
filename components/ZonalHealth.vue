@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue';
-import { useSectionsStore } from '~/stores/sections';
 import { useChaptersStore } from '~/stores/chapters';
+import { reloadNuxtApp } from '#app';
+import { useSectionsStore } from '~/stores/sections';
 
-const chapters_store = useChaptersStore();
-const sections_store = useSectionsStore();
+definePageMeta({
+    layout: 'health'
+});
 
-const selectButtonValue1 = ref(null);
+const zone = ref();
+
+const selectButtonValue1 = ref({ year: '2024', month: '04', week: '01', label: '2024-04 Week 1' });
 const buttons_list = ref([
     { year: '2024', month: '04', week: '01', label: '2024-04 Week 1' },
     { year: '2024', month: '04', week: '03', label: '2024-04 Week 3' },
@@ -34,61 +37,45 @@ const buttons_list = ref([
     { year: '2025', month: '03', week: '03', label: '2025-03 Week 3' }
 ]);
 
-const selectButtonValue2 = ref([]);
+const chapters_store = useChaptersStore();
+const sections_store = useSectionsStore();
 
-async function fetchSectionData(section_id: string) {
+async function fetchData() {
+    const route = useRoute();
+    zone.value = route.params.zone;
+
     try {
-        // Make the API call
-        await sections_store.fetchSection(section_id);
+        await sections_store.fetchSections();
     } catch (error) {
-        // Handle any errors here
         console.error('fetchSection');
         console.error(error);
     }
-}
 
-async function fetchData() {
     try {
-        // Make the API call
-        await fetchSectionData(useRouter().currentRoute.value.params.sectionid);
+        await chapters_store.fetchChapterByZone(zone.value);
     } catch (error) {
-        // Handle any errors here
-        console.error('fetchSectionData');
-        console.error(error);
-    }
-    try {
-        // Make the API call
-        await chapters_store.fetchZones();
-    } catch (error) {
-        // Handle any errors here
-        console.error('fetchSections');
+        console.error('fetchChapterByZone');
         console.error(error);
     }
 }
 
 onBeforeMount(() => {
-    // Call fetchData when the component is about to be mounted
+    reloadNuxtApp();
     fetchData();
-});
-
-onBeforeRouteUpdate((newRoute) => {
-    fetchSectionData(newRoute.params.sectionid);
 });
 </script>
 
 <template>
-    <div v-if="sections_store.section && sections_store.section.name">
-        <h1>{{ sections_store.section.name }} Team Health Doc</h1>
-    </div>
-    <Dropdown v-model="selectButtonValue1" :options="buttons_list" optionLabel="label" />
-
-    <MultiSelect v-model="selectButtonValue2" :options="chapters_store.zones" optionLabel="name" />
-
-    <div v-if="selectButtonValue1">
-        <div v-for="zone in selectButtonValue2" :key="zone.id">
-            <ZonalSectionTableElement :sectionid="sections_store.section.id" :zone="zone.name" :year="selectButtonValue1.year" :month="selectButtonValue1.month" :week="selectButtonValue1.week" />
+    <FloatLabel class="w-full md:w-14rem mb-2">
+        <Dropdown v-model="selectButtonValue1" :options="buttons_list" optionLabel="label" inputId="dd-city" class="w-full" />
+        <label for="dd-city">Select a Year-Month and week</label>
+    </FloatLabel>
+    <div class="grid p-fluid" v-if="chapters_store.chapter_list">
+        <div class="col-8 xl:col-4" v-for="chapter in chapters_store.chapter_list" :key="chapter.id">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">{{ chapter.name }}</h5>
+                <ChapterRadarChart :chapter_id="chapter.id" :year="selectButtonValue1.year" :month="selectButtonValue1.month" :week="selectButtonValue1.week" />
+            </div>
         </div>
     </div>
 </template>
-
-<style scoped lang="scss"></style>

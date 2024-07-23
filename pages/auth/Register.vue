@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useLayout } from '@/layouts/composables/layout';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import AppConfig from '@/layouts/AppConfig.vue';
 import { useAuthStore } from '~/stores/auth';
 
 const { layoutConfig } = useLayout();
 const email = ref('');
+const name = ref('');
 const password = ref('');
 // const checked = ref(false);
 const logoUrl = computed(() => {
@@ -20,31 +21,17 @@ const auth_store = useAuthStore();
 
 const toast = useToast();
 
-async function onLogInSubmit() {
+async function onRegisterSubmit() {
     try {
-        await auth_store.login(email.value, password.value);
+        await auth_store.register(name.value, name.value, email.value, password.value);
         toast.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Logged in successfully',
+            detail: 'Registered successfully',
             life: 3000
         });
 
-        if (useRoute().query?.next) {
-            useRouter().push((useRoute().query as any).next);
-        } else {
-            if (useAuthStore().user?.user_type === 'chapter') {
-                if (useAuthStore().user?.chapter_id) {
-                    useRouter().push('/chapters');
-                } else {
-                    useRouter().push('/auth/error');
-                }
-            } else if (useAuthStore().user?.user_type === 'admin') {
-                useRouter().push('/internal');
-            } else {
-                useRouter().push('/auth/error');
-            }
-        }
+        await useRouter().push('/auth/login');
     } catch {
         toast.add({
             severity: 'error',
@@ -66,24 +53,20 @@ async function onLogInSubmit() {
                     <div class="text-center mb-5">
                         <!--                        <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" />-->
                         <div class="text-900 text-3xl font-medium mb-3">Welcome!</div>
-                        <span class="text-600 font-medium">Sign in to continue</span>
+                        <span class="text-600 font-medium">Register</span>
                     </div>
 
                     <div>
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
                         <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
 
+                        <label for="name" class="block text-900 text-xl font-medium mb-2">Full Name</label>
+                        <InputText id="name" v-model="name" type="text" placeholder="Full Name" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
                         <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
 
-                        <!--                        <div class="flex align-items-center justify-content-between mb-5 gap-5">-->
-                        <!--                            <div class="flex align-items-center">-->
-                        <!--                                <Checkbox id="rememberme1" v-model="checked" binary class="mr-2"></Checkbox>-->
-                        <!--                                <label for="rememberme1">Remember me</label>-->
-                        <!--                            </div>-->
-                        <!--                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(&#45;&#45;primary-color)">Forgot password?</a>-->
-                        <!--                        </div>-->
-                        <Button label="Sign In" class="w-full p-3 text-xl" @click="onLogInSubmit"></Button>
+                        <Button label="Register" class="w-full p-3 text-xl" @click="onRegisterSubmit"></Button>
                     </div>
                 </div>
             </div>

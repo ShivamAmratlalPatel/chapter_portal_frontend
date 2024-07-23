@@ -10,7 +10,8 @@ let props = defineProps({
     sectionid: Number,
     zone: String,
     year: String,
-    month: String
+    month: String,
+    week: String
 });
 
 const health_data = ref();
@@ -44,7 +45,7 @@ const fetchDataSection = async (section_id: string) => {
     }
     try {
         // Make the API call
-        health_data.value = await health_store.fetchHealthByZone(props.zone, props.year, props.month, section_id);
+        health_data.value = await health_store.fetchHealthByZone(props.zone, props.year, props.month, props.week, section_id);
     } catch (error) {
         // Handle any errors here
         console.error('fetchHealth');
@@ -63,7 +64,7 @@ const fetchData = async () => {
     }
     try {
         // Make the API call
-        health_data.value = await health_store.fetchHealthByZone(props.zone, props.year, props.month, props.sectionid);
+        health_data.value = await health_store.fetchHealthByZone(props.zone, props.year, props.month, props.week, props.sectionid);
     } catch (error) {
         // Handle any errors here
         console.error('fetchHealth');
@@ -91,6 +92,7 @@ async function saveHealthScore(data) {
     delete data.newData.average;
     data.newData.year = props.year;
     data.newData.month = props.month;
+    data.newData.week = props.week;
 
     try {
         await health_store.saveHealth(chapter_id, data.newData);
@@ -99,7 +101,12 @@ async function saveHealthScore(data) {
         console.error('saveHealth');
         console.error(error);
         try {
-            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: `${error.data.detail}`, life: 3000 });
+            toast.add({
+                severity: 'error',
+                summary: 'Error Saving Health',
+                detail: `${error.data.detail}`,
+                life: 3000
+            });
         } catch (error) {
             toast.add({ severity: 'error', summary: 'Error Saving Health', detail: 'Error saving health', life: 3000 });
         }

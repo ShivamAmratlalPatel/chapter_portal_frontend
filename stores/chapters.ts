@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
+import { useAuthStore } from '~/stores/auth';
 
 export interface ChapterRead {
     id: string;
@@ -16,6 +17,7 @@ export interface NextPage {
     cursor_column: string;
     cursor_id: string;
 }
+
 export interface PaginatedChapters {
     next: NextPage | null;
     previous: NextPage | null;
@@ -54,7 +56,7 @@ export const useChaptersStore = defineStore({
     }),
     actions: {
         async fetchChapters(next_page: NextPage | null = null, filter_search: string | null = null) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             let endpoint = 'chapters';
             if (next_page !== null) {
@@ -65,43 +67,58 @@ export const useChaptersStore = defineStore({
             }
 
             this.chapters = await $fetch(endpoint, {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.chapters;
         },
         async fetchAllChapters() {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.chapter_sidebar_list = await $fetch('all_chapters', {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.chapter_sidebar_list;
         },
         async fetchChapter(chapter_id: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.chapter = await $fetch(`chapter/${chapter_id}`, {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.chapter;
         },
         async fetchZones() {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.zones = await $fetch('zones', {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.zones;
         },
         async fetchChapterByZone(zone: string) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.chapter_list = await $fetch(`chapters/${zone}`, {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.chapter_list;

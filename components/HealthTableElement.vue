@@ -23,6 +23,7 @@ const close = (event) => {
         }
     }
 };
+
 async function fetchHealth(chapter_id: string) {
     try {
         // Make the API call
@@ -76,7 +77,12 @@ async function saveHealthScore(data) {
         console.error('saveHealth');
         console.error(error);
         try {
-            toast.add({ severity: 'error', summary: 'Error Saving Health', detail: `${error.data.detail}`, life: 3000 });
+            toast.add({
+                severity: 'error',
+                summary: 'Error Saving Health',
+                detail: `${error.data.detail}`,
+                life: 3000
+            });
         } catch (error) {
             toast.add({ severity: 'error', summary: 'Error Saving Health', detail: 'Error saving health', life: 3000 });
         }

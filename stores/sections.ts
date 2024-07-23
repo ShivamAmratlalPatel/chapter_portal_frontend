@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { RuntimeConfig } from '@nuxt/schema';
+import { useAuthStore } from '~/stores/auth';
 
 export interface Section {
     id: number;
@@ -15,19 +16,25 @@ export const useSectionsStore = defineStore({
     }),
     actions: {
         async fetchSections() {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.sections = await $fetch('sections', {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.sections;
         },
         async fetchSection(id: number) {
-            const runtimeConfig: RuntimeConfig = useRuntimeConfig();
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
 
             this.section = await $fetch(`section/${id}`, {
-                baseURL: runtimeConfig.public.apiUrl
+                baseURL: runtimeConfig.public.apiUrl,
+                headers: {
+                    Authorization: `Bearer ${useAuthStore().token}`
+                }
             });
 
             return this.section;

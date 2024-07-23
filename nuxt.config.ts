@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     app: {
         head: {
-            title: 'Chapter Portal',
+            title: 'Portal',
             link: [
                 {
                     id: 'theme-css',
