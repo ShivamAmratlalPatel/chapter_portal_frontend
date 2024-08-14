@@ -8,14 +8,8 @@ const sections_store = useSectionsStore();
 
 const selectButtonValue1 = ref(null);
 const buttons_list = ref([
-    { year: '2024', month: '04', week: '01', label: '2024-04 Week 1' },
-    { year: '2024', month: '04', week: '03', label: '2024-04 Week 3' },
-    { year: '2024', month: '05', week: '01', label: '2024-05 Week 1' },
-    { year: '2024', month: '05', week: '03', label: '2024-05 Week 3' },
     { year: '2024', month: '06', week: '01', label: '2024-06 Week 1' },
-    { year: '2024', month: '06', week: '03', label: '2024-06 Week 3' },
     { year: '2024', month: '07', week: '01', label: '2024-07 Week 1' },
-    { year: '2024', month: '07', week: '03', label: '2024-07 Week 3' },
     { year: '2024', month: '08', week: '01', label: '2024-08 Week 1' },
     { year: '2024', month: '08', week: '03', label: '2024-08 Week 3' },
     { year: '2024', month: '09', week: '01', label: '2024-09 Week 1' },
@@ -86,7 +80,9 @@ onBeforeRouteUpdate((newRoute) => {
 
     <div v-if="selectButtonValue1">
         <div v-for="zone in selectButtonValue2" :key="zone.id">
-            <ZonalSectionTableElement :sectionid="sections_store.section.id" :zone="zone.name" :year="selectButtonValue1.year" :month="selectButtonValue1.month" :week="selectButtonValue1.week" />
+            <ZonalSectionTableElement :sectionid="sections_store.section.id" :zone="zone.name"
+                                      :year="selectButtonValue1.year" :month="selectButtonValue1.month"
+                                      :week="selectButtonValue1.week" />
         </div>
     </div>
 </template>
