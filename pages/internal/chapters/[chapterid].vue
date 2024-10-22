@@ -12,7 +12,7 @@ const nestedRouteItems = ref([
         label: 'Dashboard'
     },
     {
-        label: 'Actions'
+        label: 'Events'
     },
     {
         label: 'Health'
@@ -76,7 +76,7 @@ onBeforeRouteUpdate((newRoute) => {
         <ChapterDashboard></ChapterDashboard>
     </div>
     <div v-if="currentTab === 1">
-        <ChapterActions></ChapterActions>
+        <ChapterEvents></ChapterEvents>
     </div>
     <div v-if="currentTab === 2">
         <ChapterHealth></ChapterHealth>

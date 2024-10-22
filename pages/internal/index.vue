@@ -61,21 +61,21 @@ onBeforeMount(() => {
             </ul>
         </template>
     </Card>
-    <Card class="mb-2">
-        <template v-slot:title>
-            <div class="flex align-items-center justify-content-between mb-0">
-                <h5>Actions</h5>
-            </div>
-        </template>
+    <!--    <Card class="mb-2">-->
+    <!--        <template v-slot:title>-->
+    <!--            <div class="flex align-items-center justify-content-between mb-0">-->
+    <!--                <h5>Actions</h5>-->
+    <!--            </div>-->
+    <!--        </template>-->
 
-        <template v-slot:content>
-            <DataTable :value="useActionsStore().chapterActions" tableStyle="min-width: 50rem">
-                <Column field="chapter_name" header="Chapters"></Column>
-                <Column field="note" header="Note"></Column>
-                <Column field="due_date" header="Due Date"></Column>
-            </DataTable>
-        </template>
-    </Card>
+    <!--        <template v-slot:content>-->
+    <!--            <DataTable :value="useActionsStore().chapterActions" tableStyle="min-width: 50rem">-->
+    <!--                <Column field="chapter_name" header="Chapters"></Column>-->
+    <!--                <Column field="note" header="Note"></Column>-->
+    <!--                <Column field="due_date" header="Due Date"></Column>-->
+    <!--            </DataTable>-->
+    <!--        </template>-->
+    <!--    </Card>-->
     <Card class="mb-2">
         <template v-slot:title>
             <div class="flex align-items-center justify-content-between mb-0">
