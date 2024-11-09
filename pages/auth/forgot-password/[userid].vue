@@ -22,29 +22,15 @@ const toast = useToast();
 
 async function onLogInSubmit() {
     try {
-        await auth_store.login(email.value, password.value);
+        await auth_store.changePassword(useRouter().currentRoute.value.params.userid, password.value);
         toast.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Logged in successfully',
+            detail: 'Password changed  successfully',
             life: 3000
         });
 
-        if (useRoute().query?.next) {
-            useRouter().push((useRoute().query as any).next);
-        } else {
-            if (useAuthStore().user?.user_type === 'chapter') {
-                if (useAuthStore().user?.chapter_id) {
-                    useRouter().push('/chapters');
-                } else {
-                    useRouter().push('/auth/error');
-                }
-            } else if (useAuthStore().user?.user_type === 'admin') {
-                useRouter().push('/internal');
-            } else {
-                useRouter().push('/auth/error');
-            }
-        }
+        await useRouter().push('/auth/login');
     } catch {
         toast.add({
             severity: 'error',
@@ -65,14 +51,10 @@ async function onLogInSubmit() {
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <!--                        <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" />-->
-                        <div class="text-900 text-3xl font-medium mb-3">Welcome!</div>
-                        <span class="text-600 font-medium">Sign in to continue</span>
+                        <div class="text-900 text-3xl font-medium mb-3">Change Password!</div>
                     </div>
 
                     <div>
-                        <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                        <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
-
                         <label for="password1" class="block text-900 text-xl font-medium mb-2">Password</label>
                         <Password id="password1" v-model="password" :feedback="false" placeholder="Password" :toggleMask="true" class="w-full md:w-30rem mb-5" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
 

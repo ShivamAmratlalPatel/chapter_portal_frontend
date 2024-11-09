@@ -155,6 +155,17 @@ export const useAuthStore = defineStore({
             });
 
             return resp;
+        },
+        async changePassword(user_id: string, new_password: string) {
+            const runtimeConfig: RuntimeConfig = useNuxtApp().$config;
+
+            await $fetch(`/users/${user_id}/change_password`, {
+                baseURL: runtimeConfig.public.apiUrl,
+                method: 'PUT',
+                query: {
+                    password: new_password
+                }
+            });
         }
     }
 });
